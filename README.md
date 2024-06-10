@@ -6,10 +6,10 @@ Get a built APK [here](https://mathmaster13.github.io/wakalito-android).
 
 ## Known Issues
 
-- Keyboard may not display correctly in landscape mode or on wider screens.
+- Keyboard may not display correctly on particularly wide/narrow screens.
 - `delete_fallback()` is unimplemented.
+- Unicode and the delete key do not play nicely, especially with surrogate pairs.
 - The box displaying the sequence you are currently typing is transparent.
-- The return key sends a hard keyboard "ENTER".
 
 ## Unimplemented Features
 
