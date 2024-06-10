@@ -6,7 +6,7 @@ import android.os.Build
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputConnection
+import android.view.inputmethod.ExtractedTextRequest
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -60,10 +60,25 @@ class WakalitoKeyboard : InputMethodService() {
                     println("no selection")
                     // let's do this the lazy way for now - directly porting from iOS
                     // premature optimization is bad
-                    if (prevChar?.isLetter() == true) {
+                    if (prevChar?.isLetter() == true) { // sanity check - we MUST delete at least one character
                         println("prev is letter")
-                        while (prevChar()?.isLetter() == true) delete()
-                        if (prevChar() == ' ') delete()
+                        // Credit to Toki Pona Keyboard for the "beforeCursorText" variable :)
+                        val textLen = currentInputConnection
+                            .getExtractedText(ExtractedTextRequest(), 0)
+                            ?.text?.length ?: return@setOnClickListener deleteFallback()
+
+                        val textBeforeCursor = textBeforeCursor(textLen)
+
+                        if (textBeforeCursor.isNullOrEmpty())
+                            return@setOnClickListener deleteFallback()
+
+                        val lastSpaceIndex = run {
+                            var i = textBeforeCursor.lastIndex // verified to be a letter here!
+                            while (i >= 0 && textBeforeCursor[i].isLetter()) i--
+                            if (i >= 0 && textBeforeCursor[i] == ' ') i else i + 1
+                        }
+
+                        currentInputConnection.deleteSurroundingText(textBeforeCursor.length - lastSpaceIndex, 0)
                     } else if (prevChar != null) delete()
                 } else {
                     println("we have a selection!")
@@ -78,11 +93,16 @@ class WakalitoKeyboard : InputMethodService() {
     }
 
     private fun delete() {
-//        currentInputConnection.deleteSurroundingText(1, 0) - FIXME gets the code stuck in the while loop; nothing appears to be deleted; could be a character encoding issue.
-        // FIXME for testing purposes, we emulate a hard keyboard (bad).
-        //  This hack causes a *noticeable* amount of lag, plus problems with long strings.
-        currentInputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL))
-        currentInputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL))
+        currentInputConnection.deleteSurroundingText(1, 0)
+    }
+
+    private fun deleteFallback() {
+        // If we cannot get the text before the cursor, we will manually delete.
+        // For debug purposes right now, we will crash.
+        // FIXME this delete fallback is known to get the keyboard stuck in an infinite loop.
+//        while (prevChar()?.isLetter() == true) delete()
+//        if (prevChar() == ' ') delete()
+        throw IllegalStateException("prevChar was a letter but there is no text before the cursor!")
     }
 
     override fun onStartInputView(editorInfo: EditorInfo?, restarting: Boolean) {
@@ -92,19 +112,16 @@ class WakalitoKeyboard : InputMethodService() {
 
     // Use the way Studio recommends if it's supported, otherwise do not.
     // Ironically, Studio's recommendation does not work on my Android R Waydroid device.
-    @SuppressLint("NewApi") // DEBUG
-    private fun prevChar(): Char? {
-        // for some incomprehensible reason, the run block is necessary to make it behave right.
-        val char = run {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                println("new system")
-                val text = dbg(currentInputEditorInfo.getInitialTextBeforeCursor(1, 0), "text: ")
-                if (text?.isNotEmpty() == true) return@run dbg(text.lastOrNull())
-            }
-            println("old system")
-            return@run dbg(currentInputConnection.getTextBeforeCursor(1, 0)?.lastOrNull()?.apply { println(code) }, "old text: ")
+    private fun prevChar(): Char? = textBeforeCursor(1)?.lastOrNull()
+
+    private fun textBeforeCursor(length: Int): CharSequence? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            println("new system")
+            val text = dbg(currentInputEditorInfo.getInitialTextBeforeCursor(length, 0), "text: ")
+            if (text?.isNotEmpty() == true) return dbg(text)
         }
-        return char
+        println("old system")
+        return dbg(currentInputConnection.getTextBeforeCursor(length, 0), "old text: ")
     }
 
     private inline fun <reified T> dbg(obj: T, string: String = ""): T {
