@@ -1,6 +1,6 @@
 # wakalito-android
 
-A work-in-progress [wakalito-ios](https://github.com/tbodt/wakakito-ios) port.
+A work-in-progress [wakalito-ios](https://github.com/tbodt/wakalito-ios) port.
 
 Get a built APK [here](https://mathmaster13.github.io/wakalito-android).
 
