@@ -1,0 +1,7 @@
+<input-method xmlns:android="http://schemas.android.com/apk/res/android"
+    android:settingsActivity="io.github.mathmaster13.wakalito.MainActivity" />
+<!--    &lt;!&ndash; Specify the class name of the custom keyboard &ndash;&gt;-->
+<!--    <subclass android:name=".WakalitoKeyboard" />-->
+
+<!--    &lt;!&ndash; Specify the settings activity (optional) &ndash;&gt;-->
+<!--    &lt;!&ndash; <settings android:activity="com.example.customkeyboard.KeyboardSettingsActivity" /> &ndash;&gt;-->
