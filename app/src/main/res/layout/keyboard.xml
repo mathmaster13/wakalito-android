@@ -3,19 +3,22 @@ also, the return key is broken
 also does this compile? are these errors just lack of IDE support?-->
 <GridLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="300dp"
     android:layout_width="match_parent"
     android:layout_gravity="bottom|center_horizontal"
     android:rowCount="5"
-    android:columnCount="6">
+    android:columnCount="6"
+    android:background="@color/light_gray">
 
     <TextView
         android:id="@+id/textView"
-        android:text=""
+        android:layout_rowSpan="1"
+        android:layout_rowWeight="1"
+        android:layout_columnSpan="6"
         android:layout_gravity="fill"
         android:gravity="center"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="6" />
+        android:text="" />
 
     <ImageButton
         android:id="@+id/la"
@@ -24,7 +27,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="la"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/la"
         android:src="@drawable/la" />
 
     <ImageButton
@@ -34,7 +38,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="horizontal line"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/hor"
         android:src="@drawable/hor" />
 
     <ImageButton
@@ -44,7 +49,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="dot"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/dot"
         android:src="@drawable/dot" />
 
     <ImageButton
@@ -54,7 +60,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="down/left arrow"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/down"
         android:src="@drawable/down" />
 
     <ImageButton
@@ -64,7 +71,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="ike"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/ike"
         android:src="@drawable/ike" />
 
     <ImageButton
@@ -74,7 +82,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="opening bracket"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/bracket_open"
         android:src="@drawable/bracket_open" />
 
     <ImageButton
@@ -84,7 +93,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="luka"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/luka"
         android:src="@drawable/luka" />
 
     <ImageButton
@@ -94,7 +104,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="vertical line"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/vert"
         android:src="@drawable/vert" />
 
     <ImageButton
@@ -104,7 +115,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="circle"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/circle"
         android:src="@drawable/circle" />
 
     <ImageButton
@@ -114,7 +126,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="up/right arrow"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/up"
         android:src="@drawable/up" />
 
     <ImageButton
@@ -124,7 +137,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="pona"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/pona"
         android:src="@drawable/pona" />
 
     <ImageButton
@@ -134,7 +148,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="closing bracket"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/bracket_pini"
         android:src="@drawable/bracket_pini" />
 
     <ImageButton
@@ -144,7 +159,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="colon"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/colon"
         android:src="@drawable/colon" />
 
     <ImageButton
@@ -154,7 +170,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="poki"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/poki"
         android:src="@drawable/poki" />
 
     <ImageButton
@@ -164,7 +181,9 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="box/suno emitters"
+        android:padding="10dp"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/box"
         android:src="@drawable/box" />
 
     <ImageButton
@@ -174,7 +193,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="emitters"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/emitters"
         android:src="@drawable/emitters" />
 
     <ImageButton
@@ -184,7 +204,8 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="comma"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/comma"
         android:src="@drawable/comma" />
 
     <ImageButton
@@ -194,27 +215,28 @@ also does this compile? are these errors just lack of IDE support?-->
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:contentDescription="backspace"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/backspace"
         android:src="@drawable/backspace" />
 
-    <Button
+    <ImageButton
         android:id="@+id/space"
         android:layout_rowSpan="1"
         android:layout_columnSpan="5"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:layout_gravity="fill"
-        android:contentDescription="space" />
+        android:contentDescription="@string/space" />
 
     <ImageButton
         android:id="@+id/ret"
         android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:scaleType="fitCenter"
-        android:contentDescription="return"
+        android:layout_columnSpan="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill"
+        android:contentDescription="@string/ret"
+        android:scaleType="centerInside"
         android:src="@drawable/ret" />
 
 </GridLayout>

@@ -30,7 +30,7 @@ class WakalitoKeyboard : InputMethodService() {
         }
 
         // Special keys
-        view.findViewById<Button>(R.id.space).setOnClickListener {
+        view.findViewById<ImageButton>(R.id.space).setOnClickListener {
             if (inputList.isEmpty()) {
                 currentInputConnection.commitText(" ", 1)
             } else {

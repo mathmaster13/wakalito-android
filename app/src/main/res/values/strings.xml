@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">nasin sitelen Wakalito</string>
+    <string name="space">space</string>
+    <string name="ret">return</string>
+    <string name="backspace">backspace</string>
+    <string name="comma">comma</string>
+    <string name="emitters">emitters</string>
+    <string name="box">box/suno emitters</string>
+    <string name="poki">poki</string>
+    <string name="colon">colon</string>
+    <string name="bracket_pini">closing bracket</string>
+    <string name="pona">pona</string>
+    <string name="up">up/right arrow</string>
+    <string name="circle">circle</string>
+    <string name="vert">vertical line</string>
+    <string name="luka">luka</string>
+    <string name="bracket_open">opening bracket</string>
+    <string name="ike">ike</string>
+    <string name="down">down/left arrow</string>
+    <string name="dot">dot</string>
+    <string name="hor">horizontal line</string>
+    <string name="la">la</string>
 </resources>
