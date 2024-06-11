@@ -10,59 +10,71 @@
         android:layout_height="24sp"
         android:layout_width="match_parent"/>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
         <ImageButton
             android:id="@+id/la"
-            android:layout_height="match_parent"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:contentDescription="la"
-            android:src="@drawable/la" />
+            android:src="@drawable/la"
+            app:layout_constraintEnd_toStartOf="@+id/hor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"/>
 
         <ImageButton
             android:id="@+id/hor"
-            android:layout_height="match_parent"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:contentDescription="horizontal line"
-            android:src="@drawable/hor" />
+            android:src="@drawable/hor"
+            app:layout_constraintEnd_toStartOf="@+id/dot"
+            app:layout_constraintStart_toEndOf="@id/la"
+            app:layout_constraintHorizontal_chainStyle="spread"/>
 
         <ImageButton
             android:id="@+id/dot"
-            android:layout_height="match_parent"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:contentDescription="dot"
-            android:src="@drawable/dot" />
+            android:src="@drawable/dot"
+            app:layout_constraintEnd_toStartOf="@+id/down"
+            app:layout_constraintStart_toEndOf="@id/hor"
+            app:layout_constraintHorizontal_chainStyle="spread"/>
 
         <ImageButton
             android:id="@+id/down"
-            android:layout_height="match_parent"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:contentDescription="down/left arrow"
-            android:src="@drawable/down" />
+            android:src="@drawable/down"
+            app:layout_constraintEnd_toStartOf="@+id/ike"
+            app:layout_constraintStart_toEndOf="@id/dot"
+            app:layout_constraintHorizontal_chainStyle="spread"/>
 
         <ImageButton
             android:id="@+id/ike"
-            android:layout_height="match_parent"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:contentDescription="ike"
-            android:src="@drawable/ike" />
+            android:src="@drawable/ike"
+            app:layout_constraintEnd_toStartOf="@+id/bracket_open"
+            app:layout_constraintStart_toEndOf="@id/down"
+            app:layout_constraintHorizontal_chainStyle="spread"/>
 
         <ImageButton
             android:id="@+id/bracket_open"
-            android:layout_height="match_parent"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:contentDescription="opening bracket"
-            android:src="@drawable/bracket_open" />
-    </LinearLayout>
+            android:src="@drawable/bracket_open"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ike"
+            app:layout_constraintHorizontal_chainStyle="spread"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     
     <LinearLayout
         android:layout_width="match_parent"
