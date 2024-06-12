@@ -7,7 +7,6 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.ExtractedTextRequest
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 

@@ -6,7 +6,8 @@ Get a built APK [here](https://mathmaster13.github.io/wakalito-android).
 
 ## Known Issues
 
-- Keyboard may not display correctly on particularly wide/narrow screens.
+- Buttons may be too small or have uneven vertical spacing.
+- The keyboard does not load the first time it is selected.
 - `delete_fallback()` is unimplemented.
 - Unicode and the delete key do not play nicely, especially with surrogate pairs.
 
