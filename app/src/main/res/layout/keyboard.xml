@@ -1,222 +1,210 @@
-<?xml version="1.0" encoding="utf-8"?><!--TODO the size layout WILL change
-also, the return key is broken
-also does this compile? are these errors just lack of IDE support?-->
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="@dimen/keyboard_height"
+    android:orientation="vertical"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:rowCount="5"
-    android:columnCount="6"
     android:background="@color/light_gray">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="6"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/textview_height"
         android:gravity="center"
-        android:text="" />
+        android:id="@+id/textView"/>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height">
+        <ImageButton
+            android:id="@+id/la"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/la"
+            android:src="@drawable/la" />
 
-    <ImageButton
-        android:id="@+id/la"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/la"
-        android:src="@drawable/la" />
+        <ImageButton
+            android:id="@+id/hor"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/hor"
+            android:src="@drawable/hor" />
 
-    <ImageButton
-        android:id="@+id/hor"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/hor"
-        android:src="@drawable/hor" />
+        <ImageButton
+            android:id="@+id/dot"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/dot"
+            android:src="@drawable/dot" />
 
-    <ImageButton
-        android:id="@+id/dot"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/dot"
-        android:src="@drawable/dot" />
+        <ImageButton
+            android:id="@+id/down"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/down"
+            android:src="@drawable/down" />
 
-    <ImageButton
-        android:id="@+id/down"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/down"
-        android:src="@drawable/down" />
+        <ImageButton
+            android:id="@+id/ike"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/ike"
+            android:src="@drawable/ike" />
 
-    <ImageButton
-        android:id="@+id/ike"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/ike"
-        android:src="@drawable/ike" />
+        <ImageButton
+            android:id="@+id/bracket_open"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/bracket_open"
+            android:src="@drawable/bracket_open" />
+    </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/bracket_open"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/bracket_open"
-        android:src="@drawable/bracket_open" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height">
+        <ImageButton
+            android:id="@+id/luka"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/luka"
+            android:src="@drawable/luka" />
 
-    <ImageButton
-        android:id="@+id/luka"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/luka"
-        android:src="@drawable/luka" />
+        <ImageButton
+            android:id="@+id/vert"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/vert"
+            android:src="@drawable/vert" />
 
-    <ImageButton
-        android:id="@+id/vert"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/vert"
-        android:src="@drawable/vert" />
+        <ImageButton
+            android:id="@+id/circle"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/circle"
+            android:src="@drawable/circle" />
 
-    <ImageButton
-        android:id="@+id/circle"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/circle"
-        android:src="@drawable/circle" />
+        <ImageButton
+            android:id="@+id/up"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/up"
+            android:src="@drawable/up" />
 
-    <ImageButton
-        android:id="@+id/up"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/up"
-        android:src="@drawable/up" />
+        <ImageButton
+            android:id="@+id/pona"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/pona"
+            android:src="@drawable/pona" />
 
-    <ImageButton
-        android:id="@+id/pona"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/pona"
-        android:src="@drawable/pona" />
+        <ImageButton
+            android:id="@+id/bracket_pini"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/bracket_pini"
+            android:src="@drawable/bracket_pini" />
+    </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/bracket_pini"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/bracket_pini"
-        android:src="@drawable/bracket_pini" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height">
+        <ImageButton
+            android:id="@+id/colon"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/colon"
+            android:src="@drawable/colon" />
 
-    <ImageButton
-        android:id="@+id/colon"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/colon"
-        android:src="@drawable/colon" />
+        <ImageButton
+            android:id="@+id/poki"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/poki"
+            android:src="@drawable/poki" />
 
-    <ImageButton
-        android:id="@+id/poki"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/poki"
-        android:src="@drawable/poki" />
+        <ImageButton
+            android:id="@+id/box"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/box"
+            android:src="@drawable/box" />
 
-    <ImageButton
-        android:id="@+id/box"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:padding="10dp"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/box"
-        android:src="@drawable/box" />
+        <ImageButton
+            android:id="@+id/emitters"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/emitters"
+            android:src="@drawable/emitters" />
 
-    <ImageButton
-        android:id="@+id/emitters"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/emitters"
-        android:src="@drawable/emitters" />
+        <ImageButton
+            android:id="@+id/comma"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/comma"
+            android:src="@drawable/comma" />
 
-    <ImageButton
-        android:id="@+id/comma"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/comma"
-        android:src="@drawable/comma" />
+        <ImageButton
+            android:id="@+id/backspace"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/backspace"
+            android:src="@drawable/backspace" />
+    </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/backspace"
-        android:layout_rowSpan="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/backspace"
-        android:src="@drawable/backspace" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height">
 
-    <ImageButton
-        android:id="@+id/space"
-        android:layout_rowSpan="1"
-        android:layout_rowWeight="1"
-        android:layout_columnSpan="5"
-        android:layout_columnWeight="1"
-        android:contentDescription="@string/space"
-        tools:ignore="ImageContrastCheck" />
-
-    <ImageButton
-        android:id="@+id/ret"
-        android:layout_rowSpan="1"
-        android:layout_rowWeight="1"
-        android:layout_columnSpan="1"
-        android:layout_columnWeight="1"
-        android:contentDescription="@string/ret"
-        android:scaleType="centerInside"
-        android:src="@drawable/ret" />
-
-</GridLayout>
+        <ImageButton
+            android:id="@+id/space"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:contentDescription="@string/space"
+            tools:ignore="ImageContrastCheck" />
+        <ImageButton
+            android:id="@+id/ret"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/ret"
+            android:src="@drawable/ret" />
+    </LinearLayout>
+</LinearLayout>
