@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="textview_height">30dp</dimen>
+    <dimen name="text_height">20dp</dimen>
     <dimen name="row_height">48dp</dimen>
 </resources>

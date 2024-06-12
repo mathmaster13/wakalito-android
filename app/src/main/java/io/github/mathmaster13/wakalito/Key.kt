@@ -2,14 +2,17 @@ package io.github.mathmaster13.wakalito
 
 import io.github.mathmaster13.wakalito.Key.*
 
-enum class Key(internal val buttonID: Int) {
+// The UCSUR for a key is "\uDB87$surr".
+enum class Key(internal val buttonID: Int, internal val surr: Char) {
     // order of enum entries SHOULD NOT be relied upon except that special keys are last
-    OP_BR(R.id.bracket_open), CL_BR(R.id.bracket_pini), LA(R.id.la),
-    CIRCLE(R.id.circle), UP(R.id.up), DOWN(R.id.down), POKI(R.id.poki), BOX(R.id.box),
-    EMITTERS(R.id.emitters), PONA(R.id.pona), IKE(R.id.ike), HOR(R.id.hor), VERT(R.id.vert),
-    LUKA(R.id.luka),
+    OP_BR(R.id.bracket_open, '\uDC86'), CL_BR(R.id.bracket_pini, '\uDC87'),
+    LA(R.id.la, '\uDC89'), CIRCLE(R.id.circle, '\uDC88'),
+    UP(R.id.up, '\uDC83'), DOWN(R.id.down, '\uDC82'), POKI(R.id.poki, '\uDC85'),
+    BOX(R.id.box, '\uDC8E'), EMITTERS(R.id.emitters, '\uDC8D'),
+    PONA(R.id.pona, '\uDC94'), IKE(R.id.ike, '\uDC93'),
+    HOR(R.id.hor, '\uDC9A'), VERT(R.id.vert, '\uDC99'), LUKA(R.id.luka, '\uDC90'),
 
-    DOT(R.id.dot), COLON(R.id.colon), COMMA(R.id.comma);
+    DOT(R.id.dot, '\uDC8B'), COLON(R.id.colon, '\uDC8C'), COMMA(R.id.comma, '\uDC9C');
 
     // DEBUG ONLY
     override fun toString(): String = when(this) {

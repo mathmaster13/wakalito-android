@@ -1,21 +1,25 @@
 # wakalito-android
 
-A work-in-progress [wakalito-ios](https://github.com/tbodt/wakalito-ios) port.
+**Note:** This is a direct port of [wakalito-ios](https://github.com/tbodt/wakalito-ios). This means it is specifically designed for
+*sitelen Lasina*. sina wile kepeken nasin UCSUR la o kepeken [nasin Wakalito pi ilo Kiman](https://keyman.com/keyboards/sp_wakalito_ucsur).
+ona li tan mi ala li tan jan Lepeka.
+
+**Note:** The project is [GPLv3](./LICENSE), but the font in the resources directory is licensed under the [OFL](./OFL.txt).
+It is a slight modification of [this font](https://www.kreativekorp.com/software/fonts/fairfaxponahd/) made by jan Lepeka.
 
 Get a built APK [here](https://mathmaster13.github.io/wakalito-android).
 
-## Known Issues
+## Known Issues (will be fixed soon!)
 
-- Unicode and the delete key do not play nicely, especially with surrogate pairs.
+- Unicode and the space/delete key do not play nicely, especially with surrogate pairs.
+- Keyboard state is not saved if you change screen orientation.
 - Theoretically, the keyboard can crash if the editor takes way too long to get
 the text around the cursor. This should not happen, but if it does, let me know.
 
 ## Unimplemented Features
 
 - The app itself, which allows you to see a chart of all radical sequences allowed.
-- linja sike is not included yet, so a text-based approximation is used for now.
-- The keyboard color scheme is not finalized, and its layout is not very polished.
-  - As such, no dark mode yet.
+- Dark mode.
 
 ## Credits
 

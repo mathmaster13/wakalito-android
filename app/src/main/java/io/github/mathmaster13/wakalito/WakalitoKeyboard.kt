@@ -106,7 +106,7 @@ class WakalitoKeyboard : InputMethodService() {
 
     override fun onStartInputView(editorInfo: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(editorInfo, restarting)
-        inputList.clear()
+        if (!restarting) inputList.clear() // is this if block the right move?
     }
 
     // Use the way Studio recommends if it's supported, otherwise do not.
@@ -137,14 +137,24 @@ class WakalitoKeyboard : InputMethodService() {
     private class InputList(val textView: TextView) {
         val list: ArrayList<Key> = ArrayList(12) // 11-character sequences exist
         var asString = ""
+        val builder: StringBuilder = StringBuilder(24) // TODO redundant :(
 
         fun update() {
             // We WANT sequences.getOrDefault(input.toTypedArray(), "?"), but can't have it on API 21.
             asString = if (isEmpty()) "" else (sequences[list /*.toArray()*/] ?: "?")
-            textView.text = "${list} = ${asString}"
+            textView.text = if (isEmpty()) {
+                asString = "" // should never be accessed, but just in case
+                ""
+            } else {
+                // We WANT sequences.getOrDefault(input.toTypedArray(), "?"), but can't have it on API 21.
+                asString = if (isEmpty()) "" else (sequences[list /*.toArray()*/] ?: "?")
+                "${builder}=${asString}"
+            }
         }
         fun push(key: Key) {
             list.add(key)
+            builder.append('\uDB87')
+            builder.append(key.surr)
             update()
         }
         // returns true if something was popped
@@ -152,6 +162,7 @@ class WakalitoKeyboard : InputMethodService() {
             val canPop = list.isNotEmpty()
             if (canPop) {
                 list.removeAt(list.size - 1)
+                builder.setLength(builder.length - 2)
                 update()
             }
             return canPop
@@ -159,6 +170,7 @@ class WakalitoKeyboard : InputMethodService() {
         fun clear() {
             if (list.isNotEmpty()) {
                 list.clear()
+                builder.clear()
                 update()
             }
         }
