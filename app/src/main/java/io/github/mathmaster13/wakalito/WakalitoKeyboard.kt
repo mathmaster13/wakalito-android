@@ -42,10 +42,10 @@ class WakalitoKeyboard : InputMethodService() {
         }
 
         view.findViewById<ImageButton>(R.id.ret).setOnClickListener {
-//            currentInputConnection.commitText("\n", 1) FIXME works, but makes stuff like browsers annoying to use
-            // FIXME for compatibility with browsers, we send a hard keyboard event (bad)
-            currentInputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
-            currentInputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER))
+//            currentInputConnection.commitText("\n", 1)
+            // FIXME for max compatibility with browsers, we send a hard keyboard event
+            // it's possible \n works usually and Waydroid's default browser just sucks - check Chrome and Silk
+            sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
         }
 
         view.findViewById<ImageButton>(R.id.backspace).setOnClickListener {
@@ -140,15 +140,13 @@ class WakalitoKeyboard : InputMethodService() {
         val builder: StringBuilder = StringBuilder(24) // TODO redundant :(
 
         fun update() {
-            // We WANT sequences.getOrDefault(input.toTypedArray(), "?"), but can't have it on API 21.
-            asString = if (isEmpty()) "" else (sequences[list /*.toArray()*/] ?: "?")
-            textView.text = if (isEmpty()) {
+            if (isEmpty()) {
                 asString = "" // should never be accessed, but just in case
-                ""
+                textView.text = ""
             } else {
                 // We WANT sequences.getOrDefault(input.toTypedArray(), "?"), but can't have it on API 21.
-                asString = if (isEmpty()) "" else (sequences[list /*.toArray()*/] ?: "?")
-                "${builder}=${asString}"
+                asString = sequences[list /*.toArray()*/] ?: "?"
+                textView.text = "${builder}=${asString}"
             }
         }
         fun push(key: Key) {
