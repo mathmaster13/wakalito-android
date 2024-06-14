@@ -1,11 +1,11 @@
 package io.github.mathmaster13.wakalito
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.view.KeyEvent
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.ExtractedTextRequest
 import android.widget.ImageButton
 import android.widget.TextView
@@ -13,13 +13,16 @@ import android.widget.TextView
 // TODO is it safe to store currentInputConnection/editorinfo? is it any better to do so?
 
 class WakalitoKeyboard : InputMethodService() {
-    private lateinit var inputList: InputList
+    private val inputList = InputList()
+
+    // TODO I do not know the behavior the application should have for onStartInput(restarting = true),
+    // since I cannot think of a scenario where this happens.
 
     @SuppressLint("InflateParams")
     override fun onCreateInputView(): View {
         val view = layoutInflater.inflate(R.layout.keyboard, null)
         val textView = view.findViewById<TextView>(R.id.textView)
-        inputList = InputList(textView) // I totally  didn't forget this line...
+        inputList.textView = textView
 
         // Standard keys
         for (key in Key.entries) {
@@ -43,8 +46,7 @@ class WakalitoKeyboard : InputMethodService() {
 
         view.findViewById<ImageButton>(R.id.ret).setOnClickListener {
 //            currentInputConnection.commitText("\n", 1)
-            // FIXME for max compatibility with browsers, we send a hard keyboard event
-            // it's possible \n works usually and Waydroid's default browser just sucks - check Chrome and Silk
+            // FIXME for max compatibility with browsers like Chrome, we send a hard keyboard event
             sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
         }
 
@@ -87,8 +89,16 @@ class WakalitoKeyboard : InputMethodService() {
                 inputList.pop()
             }
         }
-
         return view
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        inputList.restoreTextView()
+    }
+
+    override fun onFinishInput() {
+        inputList.clear()
     }
 
     private fun delete() {
@@ -102,11 +112,6 @@ class WakalitoKeyboard : InputMethodService() {
 //        while (prevChar()?.isLetter() == true) delete()
 //        if (prevChar() == ' ') delete()
         throw IllegalStateException("prevChar was a letter but there is no text before the cursor!")
-    }
-
-    override fun onStartInputView(editorInfo: EditorInfo?, restarting: Boolean) {
-        super.onStartInputView(editorInfo, restarting)
-        if (!restarting) inputList.clear() // is this if block the right move?
     }
 
     // Use the way Studio recommends if it's supported, otherwise do not.
@@ -134,11 +139,13 @@ class WakalitoKeyboard : InputMethodService() {
             else -> false
         }
 
-    private class InputList(val textView: TextView) {
+    private class InputList {
+        lateinit var textView: TextView
         val list: ArrayList<Key> = ArrayList(12) // 11-character sequences exist
         var asString = ""
         val builder: StringBuilder = StringBuilder(24) // TODO redundant :(
 
+        @SuppressLint("SetTextI18n") // silly android, this text is meant to be *not* translated.
         fun update() {
             if (isEmpty()) {
                 asString = "" // should never be accessed, but just in case
@@ -149,6 +156,17 @@ class WakalitoKeyboard : InputMethodService() {
                 textView.text = "${builder}=${asString}"
             }
         }
+
+        // If we redraw the view, put the composing text back!
+        @SuppressLint("SetTextI18n")
+        fun restoreTextView() {
+            if (isEmpty()) {
+                textView.text = ""
+            } else {
+                textView.text = "${builder}=${asString}"
+            }
+        }
+
         fun push(key: Key) {
             list.add(key)
             builder.append('\uDB87')
@@ -165,13 +183,16 @@ class WakalitoKeyboard : InputMethodService() {
             }
             return canPop
         }
-        fun clear() {
+
+        // set update to false to avoid updating the UI
+        fun clear(update: Boolean = true) {
             if (list.isNotEmpty()) {
                 list.clear()
                 builder.clear()
-                update()
+                if (update) update()
             }
         }
+
         fun isEmpty() = list.isEmpty()
     }
 }
