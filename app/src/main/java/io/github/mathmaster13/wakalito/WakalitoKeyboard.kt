@@ -39,7 +39,7 @@ class WakalitoKeyboard : InputMethodService() {
                 if (inputList.asString.getOrNull(0)?.isLetter() == true
                     && prevChar()?.shouldHaveSpaceAfter == true)
                     currentInputConnection.commitText(" ", 1)
-                currentInputConnection.commitText(inputList.asString, 1)
+                currentInputConnection.commitText(inputList.displayString(), 1)
                 inputList.clear()
             }
         }
@@ -153,7 +153,7 @@ class WakalitoKeyboard : InputMethodService() {
             } else {
                 // We WANT sequences.getOrDefault(input.toTypedArray(), "?"), but can't have it on API 21.
                 asString = sequences[list /*.toArray()*/] ?: "?"
-                textView.text = "${builder}=${asString}"
+                textView.text = "${builder}\u2009=\u2009${asString}" // fairfax's spaces are too wide
             }
         }
 
@@ -194,5 +194,14 @@ class WakalitoKeyboard : InputMethodService() {
         }
 
         fun isEmpty() = list.isEmpty()
+
+        fun displayString(): String = when(asString) {
+            "epiku1" -> "epiku"
+            "soko1" -> "soko"
+            "mute2" -> "mute"
+            "sewi2" -> "sewi"
+            "toki-pona" -> "toki pona"
+            else -> asString
+        }
     }
 }

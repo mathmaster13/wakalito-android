@@ -40,16 +40,15 @@ enum class Key(internal val buttonID: Int, internal val surr: Char) {
 // This map is sponsored by jan Tepo's list and CTRL+F/CTRL+R.
 // I hate that Kotlin has no array literals outside of annotations.
 
-// FIXME I wanted Array<Key> but arrays have equality by reference.
-//  Using ArrayList is a bit of a hack which probably costs about 5 megabytes of extra space.
+// FIXME This may become Map<String, String> using UCSUR to save space, idk
 val sequences: Map<ArrayList<Key>, String> = buildMap {
     put(arrayListOf(COLON, COLON), "-")
     put(arrayListOf(COMMA, COMMA), "\"")
     put(arrayListOf(OP_BR, CL_BR), "/sp")
     put(arrayListOf(DOT), ".")
-    put(arrayListOf(HOR), "__")
+    put(arrayListOf(HOR), "__") // TODO do we keep this one? seems like a linja sike relic
     put(arrayListOf(DOT, DOT, DOT), "...")
-    put(arrayListOf(VERT, BOX, DOWN), "mi sona ala")
+    put(arrayListOf(VERT, BOX, DOWN), "misonaala")
     put(arrayListOf(COLON, LA), ":)")
     put(arrayListOf(COLON, CL_BR), ":)")
     put(arrayListOf(COLON, PONA), ":)")
@@ -296,12 +295,12 @@ val sequences: Map<ArrayList<Key>, String> = buildMap {
     put(arrayListOf(CIRCLE, DOWN, VERT), "oke")
     put(arrayListOf(DOWN, VERT, CIRCLE), "oke")
     put(arrayListOf(VERT, IKE), "n")
-    put(arrayListOf(CIRCLE, POKI), "soko")
-    put(arrayListOf(IKE, HOR, POKI), "soko")
+    put(arrayListOf(CIRCLE, POKI), "soko1")
+    put(arrayListOf(IKE, HOR, POKI), "soko1")
     put(arrayListOf(VERT, DOT, VERT), "meso")
     put(arrayListOf(DOT, VERT, VERT), "meso")
-    put(arrayListOf(VERT, VERT, UP), "epiku")
-    put(arrayListOf(UP, VERT, VERT), "epiku")
+    put(arrayListOf(VERT, VERT, UP), "epiku1")
+    put(arrayListOf(UP, VERT, VERT), "epiku1")
     put(arrayListOf(CIRCLE, EMITTERS, HOR), "kokosila")
     put(arrayListOf(EMITTERS, CIRCLE, HOR), "kokosila")
     put(arrayListOf(IKE, PONA, IKE, DOT), "lanpan")
@@ -345,6 +344,45 @@ val sequences: Map<ArrayList<Key>, String> = buildMap {
     put(arrayListOf(VERT, PONA, PONA), "wa")
 
     // NON-iOS KEY SEQUENCES
+
+    // Personal additions: mostly punctuation
     put(arrayListOf(COLON), ":")
     put(arrayListOf(COMMA), ",")
+    put(arrayListOf(PONA, VERT, PONA), "yupekosi") // nimi yupekosi li nimi ku suli
+    put(arrayListOf(PONA, LA), "yupekosi")
+    put(arrayListOf(HOR, DOWN, UP), "powe") // a MUCH more accurate powe, hor + ala
+    // TODO if you have any better recommendations for () and [], let me know! These are experimental.
+    put(arrayListOf(OP_BR), "(")
+    put(arrayListOf(CL_BR), ")")
+    put(arrayListOf(OP_BR, OP_BR), "[")
+    put(arrayListOf(CL_BR, CL_BR), "]")
+
+    // UCSUR IMPLEMENTATION COMPATIBILITY
+    put(arrayListOf(CIRCLE, UP, PONA), "alelipona")
+    put(arrayListOf(EMITTERS, PONA), "epiku")
+    put(arrayListOf(PONA, EMITTERS), "epiku")
+    put(arrayListOf(EMITTERS, HOR, HOR), "majuna")
+    put(arrayListOf(HOR, EMITTERS, HOR), "majuna")
+    put(arrayListOf(HOR, HOR, EMITTERS), "majuna")
+    put(arrayListOf(IKE, HOR, VERT), "soko")
+    put(arrayListOf(IKE, HOR, VERT, HOR), "soko")
+    put(arrayListOf(IKE, HOR, HOR, VERT), "soko")
+    put(arrayListOf(CIRCLE, EMITTERS, PONA), "toki-pona")
+    put(arrayListOf(COLON, LA, LA), ":3")
+    put(arrayListOf(COLON, PONA, PONA), ":3")
+    put(arrayListOf(COLON, CL_BR, CL_BR), ":3")
+    put(arrayListOf(COLON, VERT, LA), ":D")
+    put(arrayListOf(COLON, HOR, PONA), ":D")
+    put(arrayListOf(COLON, VERT, CL_BR), ":D")
+    put(arrayListOf(COLON, VERT, LUKA), ":P")
+    put(arrayListOf(COLON, HOR, LUKA), ":P")
+
+    // NIMI SU COMPATIBILITY
+    put(arrayListOf(BOX, IKE, IKE), "su") // I made the su sequences
+    put(arrayListOf(BOX, IKE, LA), "su")
+    put(arrayListOf(LUKA, LUKA, LUKA, LUKA), "mute2")
+    put(arrayListOf(VERT, VERT, HOR, DOT), "sewi2") // supa + dot (I made these)
+    put(arrayListOf(VERT, HOR, VERT, DOT), "sewi2") // how i write it
+    put(arrayListOf(DOT, COMMA, COMMA), "te") // after slight adjustment, we borrow the USCUR quote sequences as te/to
+    put(arrayListOf(COMMA, COMMA, DOT), "to") // these could just be quote marks in su, but we have a sequence for that.
 }
