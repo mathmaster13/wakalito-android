@@ -201,6 +201,8 @@ class WakalitoKeyboard : InputMethodService() {
             "mute2" -> "mute"
             "sewi2" -> "sewi"
             "toki-pona" -> "toki pona"
+            "misonala" -> "mi sona ala"
+            "alelipona" -> "ale li pona"
             else -> asString
         }
     }
