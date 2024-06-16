@@ -4,7 +4,7 @@
 *sitelen Lasina*. sina wile kepeken nasin UCSUR la o kepeken [nasin Wakalito pi ilo Kiman](https://keyman.com/keyboards/sp_wakalito_ucsur).
 ona li tan mi ala li tan jan Lepeka.
 
-**Note:** The project is [GPLv3](./LICENSE), but the font in the resources directory is licensed under the [OFL](./OFL.txt).
+**Note:** All files in the project are [GPLv3](./LICENSE), **except for** the font in the resources directory, which is licensed under the [OFL](./OFL.txt).
 It is a modification of [this font](https://www.kreativekorp.com/software/fonts/fairfaxponahd/) made by jan Lepeka. I will publish the exact modifications soon.
 
 Get a built APK [here](https://mathmaster13.github.io/wakalito-android).
