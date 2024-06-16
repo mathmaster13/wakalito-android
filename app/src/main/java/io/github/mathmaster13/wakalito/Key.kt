@@ -382,6 +382,7 @@ val sequences: Map<ArrayList<Key>, String> = buildMap {
     put(arrayListOf(BOX, IKE, LA), "su")
     put(arrayListOf(LUKA, LUKA, LUKA, LUKA), "mute2")
     put(arrayListOf(VERT, VERT, HOR, DOT), "sewi2") // supa + dot (I made these)
+    put(arrayListOf(HOR, VERT, VERT, DOT), "sewi2") // supa + dot
     put(arrayListOf(VERT, HOR, VERT, DOT), "sewi2") // how i write it
     put(arrayListOf(DOT, COMMA, COMMA), "te") // after slight adjustment, we borrow the USCUR quote sequences as te/to
     put(arrayListOf(COMMA, COMMA, DOT), "to") // these could just be quote marks in su, but we have a sequence for that.
