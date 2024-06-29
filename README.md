@@ -23,8 +23,6 @@ the text around the cursor. This should not happen, but if it does, let me know.
 
 ## Credits
 
-No one on this list was involved in the code for this project.
-
 jan Tepo and kala pona Tonyu, for writing the code that I have the honor of butchering.
 
 kala pona Tonyu and waso Likipi, for wakalito, and jan Lepeka for the UCSUR implementation and making fonts that are amazingly easy to modify.

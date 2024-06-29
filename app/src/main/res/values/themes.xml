@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.NasinSitelenWakalito" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:textColor">@color/black</item>
+    <style name="Theme.NasinSitelenWakalito" parent="Theme.AppCompat.DayNight">
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored.WakalitoButton</item>
+    </style>
+    <style name="Widget.AppCompat.Button.Colored.WakalitoButton">
+        <item name="color">@color/button_color</item>
     </style>
 </resources>
