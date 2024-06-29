@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<!--TODO change text size, edittext height, etc. possibly use linja sike for the credit text because it looks a bit nicer?-->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="40sp"
+        app:fontFamily="@font/compose_glyph_font"
+        android:fontFamily="@font/compose_glyph_font"
+        tools:ignore="SpUsage"
+        android:textColor="@color/text_color"
+        android:text="TODO"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_height"
+        android:importantForAutofill="no"
+        android:hint="sina ken sitelen lon ni a"
+        android:inputType="text" />
+
+</LinearLayout>
