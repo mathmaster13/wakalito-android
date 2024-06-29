@@ -12,6 +12,7 @@ Debug builds are in the usual app build directory; old builds are [here](https:/
 Every sequence in wakalito-ios, every sequence in jan Lepeka's implementation except certain UCSUR-specific punctuation, every glyph in lipu su, yupekosi, and extra punctuation. Some glyphs may have added alternate sequences from me.
 
 ## Known Issues (will be fixed soon!)
+- On rare occasions the input method may need to be clicked again to load the keyboard. For me, this happens on Unified Search with Amazon Fire, but no other app, so it could be something with that app. It did not happen before the "broken" commit.
 - Unicode and the space/delete key do not play nicely. Specifically, I might delete half of a surrogate pair.
 - Theoretically, the keyboard can crash if the editor takes way too long to get
 the text around the cursor. This should not happen, but if it does, let me know.
@@ -19,7 +20,6 @@ the text around the cursor. This should not happen, but if it does, let me know.
 ## Unimplemented Features
 - The app itself, which allows you to see a chart of all radical sequences allowed.
 - App icons are intentionally not added until the app is done.
-- Dark mode.
 
 ## Credits
 
