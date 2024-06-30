@@ -23,5 +23,12 @@
         android:importantForAutofill="no"
         android:hint="sina ken sitelen lon ni a"
         android:inputType="text" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/glyph_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

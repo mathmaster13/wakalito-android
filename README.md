@@ -18,7 +18,7 @@ Every sequence in wakalito-ios, every sequence in jan Lepeka's implementation ex
 the text around the cursor. This should not happen, but if it does, let me know.
 
 ## Unimplemented Features
-- The app itself, which allows you to see a chart of all radical sequences allowed.
+- The app itself is almost finished but not just yet.
 - App icons are intentionally not added until the app is done.
 
 ## Credits

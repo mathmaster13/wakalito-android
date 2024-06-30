@@ -3,6 +3,9 @@ package io.github.mathmaster13.wakalito
 import io.github.mathmaster13.wakalito.Key.*
 
 // The UCSUR for a key is "\uDB87$surr".
+
+const val UCSUR_HIGH = '\uDB87'
+
 enum class Key(internal val buttonID: Int, internal val surr: Char) {
     // order of enum entries SHOULD NOT be relied upon except that special keys are last
     OP_BR(R.id.bracket_open, '\uDC86'), CL_BR(R.id.bracket_pini, '\uDC87'),
@@ -59,7 +62,7 @@ val sequences: Map<ArrayList<Key>, String> = buildMap {
     put(arrayListOf(COLON, DOWN), ":v")
     put(arrayListOf(VERT, CIRCLE, DOT), "a")
     put(arrayListOf(VERT, DOT, DOT), "a")
-    put(arrayListOf(VERT, DOT, VERT, DOT), "a a a ")
+    put(arrayListOf(VERT, DOT, VERT, DOT), "aaa")
     put(arrayListOf(DOT, DOT, HOR, HOR, HOR, CIRCLE), "akesi")
     put(arrayListOf(CIRCLE, HOR, HOR, HOR, DOT, DOT), "akesi")
     put(arrayListOf(DOWN, UP), "ala")
@@ -387,3 +390,22 @@ val sequences: Map<ArrayList<Key>, String> = buildMap {
     put(arrayListOf(DOT, COMMA, COMMA), "te") // after slight adjustment, we borrow the USCUR quote sequences as te/to
     put(arrayListOf(COMMA, COMMA, DOT), "to") // these could just be quote marks in su, but we have a sequence for that.
 }
+
+data class SequenceMapping(val text: String, val radicals: String)
+
+// that's right friends, we're making a COPY of the list! :(
+val displaySequences: List<SequenceMapping> = sequences.map { (seq, str) ->
+    SequenceMapping(str, buildString {
+        for (key in seq) append("$UCSUR_HIGH${key.surr}")
+    })
+}.sortedBy {
+    when (it.text) {
+        "Pingo" -> "pingo" // I mean come on. it's non-iOS but...
+        // manually adjust some rogue punctuation
+        "[" -> ")("
+        "]" -> "))"
+        else -> it.text
+    }
+}
+// TODO i'd love to have the radicals within the same glyph be sorted too, eventually.
+// possibly "$text$radicals"

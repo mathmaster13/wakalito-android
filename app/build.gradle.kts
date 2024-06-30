@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.foundation.layout.android)
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

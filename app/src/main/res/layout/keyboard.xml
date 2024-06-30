@@ -23,61 +23,42 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_height">
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/la"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/la"
-            android:src="@drawable/la"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/la" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/hor"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/hor"
             android:src="@drawable/hor"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/dot"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/dot"
             android:src="@drawable/dot"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/down"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/down"
             android:src="@drawable/down"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/ike"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/ike"
             android:src="@drawable/ike"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/bracket_open"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/bracket_open"
             android:src="@drawable/bracket_open"
             android:backgroundTint="@color/button_color" />
@@ -87,61 +68,43 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_height">
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/luka"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/luka"
             android:src="@drawable/luka"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/vert"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/vert"
             android:src="@drawable/vert"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/circle"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/circle"
             android:src="@drawable/circle"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/up"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/up"
             android:src="@drawable/up"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/pona"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/pona"
             android:src="@drawable/pona"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/bracket_pini"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/bracket_pini"
             android:src="@drawable/bracket_pini"
             android:backgroundTint="@color/button_color" />
@@ -151,61 +114,43 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/row_height">
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/colon"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/colon"
             android:src="@drawable/colon"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/poki"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/poki"
             android:src="@drawable/poki"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/box"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/box"
             android:src="@drawable/box"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/emitters"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/emitters"
             android:src="@drawable/emitters"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/comma"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/comma"
             android:src="@drawable/comma"
             android:backgroundTint="@color/button_color" />
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/backspace"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/backspace"
             android:src="@drawable/backspace"
             android:backgroundTint="@color/button_color" />
@@ -216,19 +161,15 @@
         android:layout_height="@dimen/row_height">
 
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/space"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:layout_weight="5"
             android:contentDescription="@string/space"
             tools:ignore="ImageContrastCheck"
             android:backgroundTint="@color/button_color" />
         <ImageButton
+            style="@style/WakalitoKey"
             android:id="@+id/ret"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:scaleType="centerInside"
             android:contentDescription="@string/ret"
             android:src="@drawable/ret"
             android:backgroundTint="@color/button_color" />

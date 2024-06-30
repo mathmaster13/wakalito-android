@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="RtlHardcoded"
+    android:layout_marginLeft="10sp"
+    android:layout_marginRight="10sp">
+<!--    TODO decide alllllllll the heights/colors and refactor these into styles-->
+
+    <TextView
+        android:id="@+id/glyph"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="left"
+        app:fontFamily="@font/compose_glyph_font"
+        android:fontFamily="@font/compose_glyph_font"
+        android:textColor="@color/text_color"/>
+
+    <TextView
+        android:id="@+id/radicals"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="right"
+        app:fontFamily="@font/compose_glyph_font"
+        android:fontFamily="@font/compose_glyph_font"
+        android:textColor="@color/text_color"/>
+</LinearLayout>
