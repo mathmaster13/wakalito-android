@@ -1,13 +1,21 @@
 package io.github.mathmaster13.wakalito
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class SequencesAdapter(private val data: List<SequenceMapping>)
+class SequencesAdapter(list: List<SequenceMapping>)
     : RecyclerView.Adapter<SequencesAdapter.ViewHolder>() {
+    internal var data = list
+        @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            field = value
+            notifyDataSetChanged() // TODO for now this is fine. premature optimization is bad.
+        }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val glyphText: TextView = view.findViewById(R.id.glyph)
         val radicalsText: TextView = view.findViewById(R.id.radicals)

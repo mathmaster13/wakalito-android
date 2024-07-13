@@ -6,14 +6,17 @@ import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.ExtractedTextRequest
 import android.widget.ImageButton
 import android.widget.TextView
+import kotlin.properties.Delegates
 
 // TODO is it safe to store currentInputConnection/editorinfo? is it any better to do so?
 
 class WakalitoKeyboard : InputMethodService() {
     private val inputList = InputList()
+    private var actionId: Int = EditorInfo.IME_ACTION_NONE // default is press enter
 
     // TODO I do not know the behavior the application should have for onStartInput(restarting = true),
     // since I cannot think of a scenario where this happens.
@@ -36,7 +39,7 @@ class WakalitoKeyboard : InputMethodService() {
             if (inputList.isEmpty()) {
                 currentInputConnection.commitText(" ", 1)
             } else {
-                if (inputList.asString.getOrNull(0)?.isLetter() == true
+                if (inputList.composeString.getOrNull(0)?.isLetter() == true
                     && prevChar()?.shouldHaveSpaceAfter == true)
                     currentInputConnection.commitText(" ", 1)
                 currentInputConnection.commitText(inputList.displayString(), 1)
@@ -45,9 +48,12 @@ class WakalitoKeyboard : InputMethodService() {
         }
 
         view.findViewById<ImageButton>(R.id.ret).setOnClickListener {
-//            currentInputConnection.commitText("\n", 1)
-            // FIXME for max compatibility with browsers like Chrome, we send a hard keyboard event
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+            // credit to toki pona keyboard's code for helping me figure this out
+            // FIXME maybe this is wrong - there aren't good online resources
+            val actionId = this.actionId // I promise it won't change!
+            if (actionId == EditorInfo.IME_ACTION_NONE)
+                sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+            else currentInputConnection.performEditorAction(actionId)
         }
 
         view.findViewById<ImageButton>(R.id.backspace).setOnClickListener {
@@ -90,6 +96,23 @@ class WakalitoKeyboard : InputMethodService() {
             }
         }
         return view
+    }
+
+    override fun onStartInputView(editorInfo: EditorInfo?, restarting: Boolean) {
+        super.onStartInputView(editorInfo, restarting)
+        // steal the enter key's functionality:
+
+        // If the editor says don't customize the enter key, I will listen.
+        if (editorInfo == null
+            || editorInfo.imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION != 0) return
+        // If the editor has a special action, use that.
+        // Otherwise, do what we're told. What could go wrong?
+        // If you decide to make your actionId zero, that is your problem.
+        val actionId = if (editorInfo.actionLabel != null) editorInfo.actionId
+            else editorInfo.imeOptions and EditorInfo.IME_MASK_ACTION
+
+        // default is NONE - convert unspecified to NONE
+        if (actionId != EditorInfo.IME_ACTION_UNSPECIFIED) this.actionId = actionId
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -142,18 +165,18 @@ class WakalitoKeyboard : InputMethodService() {
     private class InputList {
         lateinit var textView: TextView
         val list: ArrayList<Key> = ArrayList(12) // 11-character sequences exist
-        var asString = ""
+        var composeString = ""
         val builder: StringBuilder = StringBuilder(24) // TODO redundant :(
 
         @SuppressLint("SetTextI18n") // silly android, this text is meant to be *not* translated.
         fun update() {
             if (isEmpty()) {
-                asString = "" // should never be accessed, but just in case
+                composeString = "" // should never be accessed, but just in case
                 textView.text = ""
             } else {
                 // We WANT sequences.getOrDefault(input.toTypedArray(), "?"), but can't have it on API 21.
-                asString = sequences[list /*.toArray()*/] ?: "?"
-                textView.text = "${builder}\u2009=\u2009${asString}" // fairfax's spaces are too wide
+                composeString = sequences[list /*.toArray()*/] ?: "?"
+                textView.text = "${builder}\u2009=\u2009${composeString}" // fairfax's spaces are too wide
             }
         }
 
@@ -163,7 +186,7 @@ class WakalitoKeyboard : InputMethodService() {
             if (isEmpty()) {
                 textView.text = ""
             } else {
-                textView.text = "${builder}=${asString}"
+                textView.text = "${builder}=${composeString}"
             }
         }
 
@@ -195,16 +218,18 @@ class WakalitoKeyboard : InputMethodService() {
 
         fun isEmpty() = list.isEmpty()
 
-        fun displayString(): String = when(asString) {
+        fun displayString(): String = when(composeString) {
             "epiku1" -> "epiku"
             "soko1" -> "soko"
             "mute2" -> "mute"
             "sewi2" -> "sewi"
             "toki-pona" -> "toki pona"
             "aaa" -> "a a a"
-            "misonala" -> "mi sona ala"
+            "misonaala" -> "mi sona ala"
             "alelipona" -> "ale li pona"
-            else -> asString
+            else -> composeString
         }
     }
 }
+
+// TODO for the search function, use the inverse of displayString?

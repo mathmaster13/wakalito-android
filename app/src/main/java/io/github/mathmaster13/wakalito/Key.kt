@@ -398,7 +398,7 @@ val displaySequences: List<SequenceMapping> = sequences.map { (seq, str) ->
     SequenceMapping(str, buildString {
         for (key in seq) append("$UCSUR_HIGH${key.surr}")
     })
-}.sortedBy {
+}.sortedWith(compareBy({
     when (it.text) {
         "Pingo" -> "pingo" // I mean come on. it's non-iOS but...
         // manually adjust some rogue punctuation
@@ -406,6 +406,4 @@ val displaySequences: List<SequenceMapping> = sequences.map { (seq, str) ->
         "]" -> "))"
         else -> it.text
     }
-}
-// TODO i'd love to have the radicals within the same glyph be sorted too, eventually.
-// possibly "$text$radicals"
+}, { it.radicals }))

@@ -18,10 +18,12 @@
         android:textColor="@color/text_color"
         android:text="TODO"/>
     <EditText
+        android:id="@+id/search_glyph"
+        android:imeOptions="actionSearch"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/text_height"
+        android:layout_height="@dimen/textview_height"
         android:importantForAutofill="no"
-        android:hint="sina ken sitelen lon ni a"
+        android:hint="o lukin e nasin pi sitelen nimi"
         android:inputType="text" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/glyph_list"
