@@ -10,7 +10,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.ExtractedTextRequest
 import android.widget.ImageButton
 import android.widget.TextView
-import kotlin.properties.Delegates
 
 // TODO is it safe to store currentInputConnection/editorinfo? is it any better to do so?
 
@@ -40,7 +39,7 @@ class WakalitoKeyboard : InputMethodService() {
                 currentInputConnection.commitText(" ", 1)
             } else {
                 if (inputList.composeString.getOrNull(0)?.isLetter() == true
-                    && prevChar()?.shouldHaveSpaceAfter == true)
+                    && prevChar()?.shouldHaveSpaceAfter() == true)
                     currentInputConnection.commitText(" ", 1)
                 currentInputConnection.commitText(inputList.displayString(), 1)
                 inputList.clear()
@@ -59,12 +58,12 @@ class WakalitoKeyboard : InputMethodService() {
         view.findViewById<ImageButton>(R.id.backspace).setOnClickListener {
             if (inputList.isEmpty()) {
                 println("call prev")
-                val prevChar = prevChar()
                 // studio doesn't like getSelectedText but I really don't care rn
                 // NON-iOS BEHAVIOR: if the user is currently selecting text,
                 // ignore the deleting rules and just delete what we're told to!
                 if (currentInputConnection.getSelectedText(0).isNullOrEmpty()) {
                     println("no selection")
+                    val prevChar = prevChar()
                     // let's do this the lazy way for now - directly porting from iOS
                     // premature optimization is bad
                     if (prevChar?.isLetter() == true) { // sanity check - we MUST delete at least one character
@@ -74,21 +73,24 @@ class WakalitoKeyboard : InputMethodService() {
                             .getExtractedText(ExtractedTextRequest(), 0)
                             ?.text?.length ?: return@setOnClickListener deleteFallback()
 
-                        val textBeforeCursor = textBeforeCursor(textLen)
+                        val textBeforeCursor = textBeforeCursor(textLen) // should we just use .text directly?
 
-                        if (textBeforeCursor.isNullOrEmpty())
+                        if (textBeforeCursor.isNullOrEmpty()) // we clearly have a character here...
                             return@setOnClickListener deleteFallback()
 
                         val lastSpaceIndex = run {
-                            var i = textBeforeCursor.lastIndex // verified to be a letter here!
-                            while (i >= 0 && textBeforeCursor[i].isLetter()) i--
+                            var i = textBeforeCursor.lastIndex - prevChar.length // last character is a letter for sure
+                            while (i >= 0) {
+                                val char = codePointAtBack(textBeforeCursor, i)
+                                if (char.isLetter()) i -= char.length
+                                else break
+                            }
                             if (i >= 0 && textBeforeCursor[i] == ' ') i else i + 1
                         }
 
                         currentInputConnection.deleteSurroundingText(textBeforeCursor.length - lastSpaceIndex, 0)
-                    } else if (prevChar != null) delete()
+                    } else if (prevChar != null) delete(prevChar.length)
                 } else {
-                    println("we have a selection!")
                     currentInputConnection.commitText("", 1)
                 }
             } else {
@@ -124,8 +126,8 @@ class WakalitoKeyboard : InputMethodService() {
         inputList.clear()
     }
 
-    private fun delete() {
-        currentInputConnection.deleteSurroundingText(1, 0)
+    private fun delete(length: Int = 1) {
+        currentInputConnection.deleteSurroundingText(length, 0)
     }
 
     private fun deleteFallback() {
@@ -139,7 +141,20 @@ class WakalitoKeyboard : InputMethodService() {
 
     // Use the way Studio recommends if it's supported, otherwise do not.
     // Ironically, Studio's recommendation does not work on my Android R Waydroid device.
-    private fun prevChar(): Char? = textBeforeCursor(1)?.lastOrNull()
+    private fun prevChar(): SurrogateCharacter? = textBeforeCursor(2)?.let {
+        if (it.isEmpty()) null else codePointAtBack(it, it.lastIndex)
+    }
+
+    private fun codePointAtBack(nonEmptyString: CharSequence, i: Int): SurrogateCharacter = nonEmptyString.let {
+        when (it.length) {
+            0 -> throw IllegalArgumentException("no.")
+            1 -> SurrogateCharacter(Character.codePointAt(it, i), 1)
+            else -> {
+                val offset = if (it.hasSurrogatePairAt(i - 1)) 1 else 0
+                SurrogateCharacter(Character.codePointAt(it, i - offset), offset + 1)
+            }
+        }
+    }
 
     private fun textBeforeCursor(length: Int): CharSequence? {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -155,12 +170,6 @@ class WakalitoKeyboard : InputMethodService() {
         println(string + obj)
         return obj
     }
-
-    private val Char.shouldHaveSpaceAfter get() =
-        isLetter() || when(this) {
-            ',', '.', ':', '?', '!' -> true
-            else -> false
-        }
 
     private class InputList {
         lateinit var textView: TextView
@@ -232,4 +241,11 @@ class WakalitoKeyboard : InputMethodService() {
     }
 }
 
+private data class SurrogateCharacter(val codePoint: Int, val length: Int) {
+    fun isLetter() = Character.isLetter(codePoint)
+    fun shouldHaveSpaceAfter() = isLetter() || when (codePoint) {
+        ','.code, '.'.code, ':'.code, '?'.code, '!'.code -> true
+        else -> false
+    }
+}
 // TODO for the search function, use the inverse of displayString?
