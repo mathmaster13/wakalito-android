@@ -20,4 +20,6 @@
     <string name="dot">dot</string>
     <string name="hor">horizontal line</string>
     <string name="la">la</string>
+
+    <string name="glyph_search_hint">󱥄󱤮󱤉󱤿󱥍󱦗󱥠󱥁󱦘</string>
 </resources>

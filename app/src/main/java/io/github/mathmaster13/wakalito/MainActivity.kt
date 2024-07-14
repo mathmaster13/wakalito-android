@@ -58,8 +58,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-private fun <T> dbg(input: T): T = input.apply(::println)
-
 // Inverse of displayString sorta, MUST be updated with displayString
 fun sanitizeInput(string: String): String = when (val str = string.trim()) {
     // put the multi-word sequences into internal form

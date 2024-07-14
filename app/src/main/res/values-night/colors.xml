@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="text_color">@color/white</color>
-    <color name="keyboard_color">#FF323232</color>
+    <color name="keyboard_color">#232323</color>
     <color name="button_color">#5A595B</color>
 </resources>

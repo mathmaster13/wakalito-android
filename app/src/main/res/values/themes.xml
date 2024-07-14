@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.NasinSitelenWakalito" parent="Theme.AppCompat.DayNight">
+    <style name="Theme.NasinSitelenWakalito" parent="Theme.AppCompat.DayNight.NoActionBar">
 <!--        TODO in theory theming every button should work, but on Waydroid it does not!  -->
     </style>
     <style name="WakalitoKey" parent="Widget.AppCompat.Button.Colored">
