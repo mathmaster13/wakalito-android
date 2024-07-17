@@ -4,12 +4,17 @@ package io.github.mathmaster13.wakalito
 
 import android.content.Context
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.style.TypefaceSpan
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -53,7 +58,17 @@ class MainActivity : AppCompatActivity() {
             consumed
         }
 
-        // TODO get the EditText font working.
+        // create a custom typeface span without the too-recent-API constructor
+        val hint = SpannableString(resources.getString(R.string.glyph_search_hint))
+        // StackOverflow, but with more hardcoding
+        hint.setSpan(object : TypefaceSpan("") {
+            override fun updateDrawState(ds: TextPaint) {
+                ds.typeface = ResourcesCompat.getFont(applicationContext, R.font.compose_glyph_font)
+            }
+            override fun updateMeasureState(paint: TextPaint) = updateDrawState(paint)
+        }, 0, hint.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+
+        editText.hint = hint
         // TODO if using a hard "enter" press, the list seems to get gray until we hit the text view again?
     }
 }
