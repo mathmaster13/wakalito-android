@@ -60,17 +60,17 @@ class WakalitoKeyboard : InputMethodService() {
 
         view.findViewById<ImageButton>(R.id.backspace).setOnClickListener {
             if (inputList.isEmpty()) {
-                println("call prev")
+//                println("call prev")
                 // studio doesn't like getSelectedText but I really don't care rn
                 // NON-iOS BEHAVIOR: if the user is currently selecting text,
                 // ignore the deleting rules and just delete what we're told to!
                 if (currentInputConnection.getSelectedText(0).isNullOrEmpty()) {
-                    println("no selection")
+//                    println("no selection")
                     val prevChar = prevChar()
                     // let's do this the lazy way for now - directly porting from iOS
                     // premature optimization is bad
                     if (prevChar?.isLetter() == true) { // sanity check - we MUST delete at least one character
-                        println("prev is letter")
+//                        println("prev is letter")
                         // Credit to Toki Pona Keyboard for the "beforeCursorText" variable :)
                         val textLen = currentInputConnection
                             .getExtractedText(ExtractedTextRequest(), 0)
@@ -174,16 +174,16 @@ class WakalitoKeyboard : InputMethodService() {
 
     private fun textBeforeCursor(length: Int): CharSequence? {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            println("new system")
+//            println("new system")
             val text = dbg(currentInputEditorInfo.getInitialTextBeforeCursor(length, 0), "text: ")
             if (text?.isNotEmpty() == true) return dbg(text)
         }
-        println("old system")
+//        println("old system")
         return dbg(currentInputConnection.getTextBeforeCursor(length, 0), "old text: ")
     }
 
     private inline fun <reified T> dbg(obj: T, string: String = ""): T {
-        println(string + obj)
+//        println(string + obj)
         return obj
     }
 
