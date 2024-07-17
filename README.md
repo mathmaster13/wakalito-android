@@ -32,3 +32,7 @@ Waydroid, for allowing me to debug when Android Studio's emulator failed.
 
 [toki pona keyboard](https://github.com/timeopochin/tokiponakeyboard), for giving me something to
 sanity-check my code against, and for inspiring the implementation of the backspace and enter key.
+
+[iconmonstr](https://iconmonstr.com) for the backspace and some of the enter key icons.
+
+Enter key icons were inspired by the AOSP keyboard that Waydroid uses.

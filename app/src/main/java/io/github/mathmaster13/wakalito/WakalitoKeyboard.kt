@@ -15,7 +15,8 @@ import android.widget.TextView
 
 class WakalitoKeyboard : InputMethodService() {
     private val inputList = InputList()
-    private var actionId: Int = EditorInfo.IME_ACTION_NONE // default is press enter
+    private var actionId: Int = EditorInfo.IME_ACTION_UNSPECIFIED // default is press enter
+    private lateinit var enterKey: ImageButton // effectively val
 
     // TODO I do not know the behavior the application should have for onStartInput(restarting = true),
     // since I cannot think of a scenario where this happens.
@@ -46,13 +47,15 @@ class WakalitoKeyboard : InputMethodService() {
             }
         }
 
-        view.findViewById<ImageButton>(R.id.ret).setOnClickListener {
+        enterKey = view.findViewById(R.id.ret)
+        enterKey.setOnClickListener {
             // credit to toki pona keyboard's code for helping me figure this out
             // FIXME maybe this is wrong - there aren't good online resources
-            val actionId = this.actionId // I promise it won't change!
-            if (actionId == EditorInfo.IME_ACTION_NONE)
-                sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
-            else currentInputConnection.performEditorAction(actionId)
+            when (val actionId = this.actionId) { // I promise it won't change!
+                EditorInfo.IME_ACTION_UNSPECIFIED -> sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+                EditorInfo.IME_ACTION_NONE -> currentInputConnection.commitText("\n", 1)
+                else -> currentInputConnection.performEditorAction(actionId) // bad custom IDs are your skill issue
+            }
         }
 
         view.findViewById<ImageButton>(R.id.backspace).setOnClickListener {
@@ -106,15 +109,28 @@ class WakalitoKeyboard : InputMethodService() {
 
         // If the editor says don't customize the enter key, I will listen.
         if (editorInfo == null
-            || editorInfo.imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION != 0) return
+            || editorInfo.imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION != 0) {
+            this.actionId = EditorInfo.IME_ACTION_UNSPECIFIED
+            enterKey.setImageResource(R.drawable.ret)
+            return
+        }
         // If the editor has a special action, use that.
         // Otherwise, do what we're told. What could go wrong?
         // If you decide to make your actionId zero, that is your problem.
         val actionId = if (editorInfo.actionLabel != null) editorInfo.actionId
             else editorInfo.imeOptions and EditorInfo.IME_MASK_ACTION
 
-        // default is NONE - convert unspecified to NONE
-        if (actionId != EditorInfo.IME_ACTION_UNSPECIFIED) this.actionId = actionId
+        this.actionId = actionId
+
+        enterKey.setImageResource(when (actionId) {
+            EditorInfo.IME_ACTION_SEND -> R.drawable.send
+            EditorInfo.IME_ACTION_SEARCH -> R.drawable.search
+            EditorInfo.IME_ACTION_DONE -> R.drawable.done
+            EditorInfo.IME_ACTION_NEXT -> R.drawable.next
+            EditorInfo.IME_ACTION_PREVIOUS -> R.drawable.prev
+            EditorInfo.IME_ACTION_GO -> R.drawable.go
+            else -> R.drawable.ret // sadly custom action labels on the main keyboard aren't supported.
+        })
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
