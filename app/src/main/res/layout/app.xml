@@ -4,27 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
 <!--TODO change text size, edittext height, etc. possibly use linja sike for the credit text because it looks a bit nicer?-->
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/app_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="40sp"
+        android:gravity="left"
+        android:textSize="@dimen/app_text_height"
         app:fontFamily="@font/compose_glyph_font"
         android:fontFamily="@font/compose_glyph_font"
         tools:ignore="SpUsage"
         android:textColor="@color/text_color"
-        android:text="TODO"/>
+        android:text="@string/app_top_text" />
     <EditText
         android:id="@+id/search_glyph"
         android:imeOptions="actionSearch"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/textview_height"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/app_text_height"
         android:importantForAutofill="no"
         android:hint="o lukin e nasin pi sitelen nimi"
-        android:inputType="text" />
+        android:inputType="text"
+        tools:ignore="HardcodedText" />
+<!--    the hardcoded Latin string will be immediately replaced with sitelen pona if my code works. -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/glyph_list"
         android:layout_width="match_parent"

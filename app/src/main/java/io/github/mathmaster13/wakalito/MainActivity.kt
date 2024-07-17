@@ -4,10 +4,12 @@ package io.github.mathmaster13.wakalito
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Html
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.style.TypefaceSpan
+import android.text.style.URLSpan
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -15,6 +17,8 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.HtmlCompat
+import androidx.core.text.method.LinkMovementMethodCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -60,15 +64,30 @@ class MainActivity : AppCompatActivity() {
 
         // create a custom typeface span without the too-recent-API constructor
         val hint = SpannableString(resources.getString(R.string.glyph_search_hint))
-        // StackOverflow, but with more hardcoding
+        // https://stackoverflow.com/a/35322532, but with more hardcoding
         hint.setSpan(object : TypefaceSpan("") {
             override fun updateDrawState(ds: TextPaint) {
                 ds.typeface = ResourcesCompat.getFont(applicationContext, R.font.compose_glyph_font)
             }
             override fun updateMeasureState(paint: TextPaint) = updateDrawState(paint)
         }, 0, hint.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-
         editText.hint = hint
+
+        // remove the underline from the link, because it looks ugly
+        val topText = SpannableString(Html.fromHtml(resources.getString(R.string.app_top_text), 0))
+        // https://stackoverflow.com/a/72840682
+        for (u in topText.getSpans(0, topText.length, URLSpan::class.java)) {
+            topText.setSpan(object : URLSpan(u.url) {
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.isUnderlineText = false
+                }
+            }, topText.getSpanStart(u), topText.getSpanEnd(u), 0)
+        }
+        findViewById<TextView>(R.id.app_info).run {
+            text = topText
+            movementMethod = LinkMovementMethodCompat.getInstance()
+        }
         // TODO if using a hard "enter" press, the list seems to get gray until we hit the text view again?
     }
 }

@@ -5,15 +5,14 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:ignore="RtlHardcoded"
-    android:layout_marginLeft="10sp"
-    android:layout_marginRight="10sp">
+    tools:ignore="RtlHardcoded">
 <!--    TODO decide alllllllll the heights/colors and refactor these into styles-->
 
     <TextView
         android:id="@+id/glyph"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/list_text_height"
         android:layout_weight="1"
         android:gravity="left"
         app:fontFamily="@font/compose_glyph_font"
@@ -23,7 +22,8 @@
     <TextView
         android:id="@+id/radicals"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/list_text_height"
         android:layout_weight="1"
         android:gravity="right"
         app:fontFamily="@font/compose_glyph_font"
