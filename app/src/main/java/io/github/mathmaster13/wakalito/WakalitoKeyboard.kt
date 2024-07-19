@@ -22,7 +22,7 @@ class WakalitoKeyboard : InputMethodService() {
 
     private val file by lazy { if (DEBUG) {
         println("opening file")
-        File(filesDir, "debug.txt").apply {
+        File(filesDir, DEBUG_PATH).apply {
             println(path)
             writeText("---NEW FILE OPEN---\n")
         }
@@ -218,6 +218,8 @@ class WakalitoKeyboard : InputMethodService() {
         val list: ArrayList<Key> = ArrayList(12) // 11-character sequences exist
         var composeString = ""
         val builder: StringBuilder = StringBuilder(24) // TODO redundant :(
+
+        override fun toString() = list.toString()
 
         @SuppressLint("SetTextI18n") // silly android, this text is meant to be *not* translated.
         fun update() {
