@@ -22,7 +22,7 @@ class WakalitoKeyboard : InputMethodService() {
 
     private val file by lazy { if (DEBUG) {
         println("opening file")
-        File(filesDir, "debug.txt").apply {
+        File(filesDir, DEBUG_PATH).apply {
             println(path)
             writeText("---NEW FILE OPEN---\n")
         }

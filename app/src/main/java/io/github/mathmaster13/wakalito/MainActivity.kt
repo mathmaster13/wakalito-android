@@ -2,6 +2,8 @@ package io.github.mathmaster13.wakalito
 
 // TODO make the credits and table of symbols like iOS
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.text.SpannableString
@@ -12,6 +14,7 @@ import android.text.style.URLSpan
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -21,8 +24,10 @@ import androidx.core.text.method.LinkMovementMethodCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.io.File
 
 const val DEBUG: Boolean = true
+const val DEBUG_PATH = "debug.txt"
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,6 +96,18 @@ class MainActivity : AppCompatActivity() {
             movementMethod = LinkMovementMethodCompat.getInstance()
         }
         // TODO if using a hard "enter" press, the list seems to get gray until we hit the text view again?
+
+
+        // debug setup. should be optimized away for DEBUG = false.
+        if (DEBUG) {
+            findViewById<Button>(R.id.debug_copy).setOnClickListener {
+                (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
+                    .setPrimaryClip(ClipData.newPlainText("wakalito debug file", File(filesDir, DEBUG_PATH).readText()))
+            }
+            findViewById<Button>(R.id.debug_clear).setOnClickListener {
+                File(filesDir, DEBUG_PATH).writeBytes(byteArrayOf())
+            }
+        }
     }
 }
 
