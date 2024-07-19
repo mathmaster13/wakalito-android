@@ -6,10 +6,13 @@ sitelen Lasina. [This keyboard](https://keyman.com/keyboards/sp_wakalito_ucsur) 
 **Note:** All files in the project are [GPLv3](./LICENSE), *except for* the [internal font](./app/src/main/res/font/compose_glyph_font.ttf), which is licensed under the [OFL](./OFL.txt).
 It is a modification of [this font](https://www.kreativekorp.com/software/fonts/fairfaxponahd/) made by jan Lepeka. 
 
-Debug builds are in the usual app build directory; old builds are [here](https://mathmaster13.github.io/wakalito-android).
+The current (unstable) build is in the usual [app build directory](./app/build/outputs/apk/debug/app-debug.apk), or you can get a release from the usual spot.
 
 ## Compatibility
 Every sequence in wakalito-ios, every sequence in jan Lepeka's implementation except certain UCSUR-specific punctuation, every glyph in lipu su, yupekosi, and extra punctuation. Some glyphs may have added alternate sequences from me.
+
+## 1.0 pre-release jank
+The pre-release has bugs, so the [latest builds](./app/build/outputs/apk/debug/app-debug.apk) write to an internal debug file which you can copy in the Wakalito app. If you are experiencing trouble with the pre-release, use the latest build and send me your debug file (which, as you might expect, also contains what was in the text box you typed). Release builds won't have these files; pre-releases or other builds might.
 
 ## Known Possible Issues
 The keyboard is stable as far as I have tested, but it is theoretically possible for the keyboard to crash.
