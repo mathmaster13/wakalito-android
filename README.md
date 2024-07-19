@@ -11,9 +11,6 @@ The current (unstable) build is in the usual [app build directory](./app/build/o
 ## Compatibility
 Every sequence in wakalito-ios, every sequence in jan Lepeka's implementation except certain UCSUR-specific punctuation, every glyph in lipu su, yupekosi, and extra punctuation. Some glyphs may have added alternate sequences from me.
 
-## 1.0 pre-release jank
-The pre-release has bugs, so the [latest builds](./app/build/outputs/apk/debug/app-debug.apk) write to an internal debug file which you can copy in the Wakalito app. If you are experiencing trouble with the pre-release, use the latest build and send me your debug file (which, as you might expect, also contains what was in the text box you typed). Release builds won't have these files; pre-releases or other builds might.
-
 ## Known Possible Issues
 The keyboard is stable as far as I have tested, but it is theoretically possible for the keyboard to crash.
 It is also possible that you may need to click a text box twice for the keyboard to load.
@@ -35,3 +32,5 @@ sanity-check my code against, and for inspiring the implementation of the backsp
 [iconmonstr](https://iconmonstr.com) for the backspace and some of the enter key icons.
 
 Enter key icons were inspired by the AOSP keyboard that Waydroid uses.
+
+stella, for testing and helping me debug.
