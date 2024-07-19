@@ -8,8 +8,10 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.ExtractedTextRequest
+import android.view.inputmethod.InputConnection
 import android.widget.ImageButton
 import android.widget.TextView
+import java.io.File
 
 // TODO is it safe to store currentInputConnection/editorinfo? is it any better to do so?
 
@@ -18,11 +20,27 @@ class WakalitoKeyboard : InputMethodService() {
     private var actionId: Int = EditorInfo.IME_ACTION_UNSPECIFIED // default is press enter
     private lateinit var enterKey: ImageButton // effectively val
 
+    private val file by lazy { if (DEBUG) {
+        println("opening file")
+        File(filesDir, "debug.txt").apply {
+            println(path)
+            writeText("---NEW FILE OPEN---\n")
+        }
+    } else null }
+
+    // there are two possible ways spaces could be omitted. you either have no connection, or can't access the previous text. we check both.
+    override fun getCurrentInputConnection(): InputConnection {
+        if (DEBUG && super.getCurrentInputConnection() == null) dbg("INPUT CONNECTION IS NULL")
+        return super.getCurrentInputConnection()
+    }
+
     // TODO I do not know the behavior the application should have for onStartInput(restarting = true),
     // since I cannot think of a scenario where this happens.
 
     @SuppressLint("InflateParams")
     override fun onCreateInputView(): View {
+        dbg("onCreateInputView")
+
         val view = layoutInflater.inflate(R.layout.keyboard, null)
         val textView = view.findViewById<TextView>(R.id.textView)
         inputList.textView = textView
@@ -36,10 +54,11 @@ class WakalitoKeyboard : InputMethodService() {
 
         // Special keys
         view.findViewById<ImageButton>(R.id.space).setOnClickListener {
+            dbg("space pressed")
             if (inputList.isEmpty()) {
                 currentInputConnection.commitText(" ", 1)
             } else {
-                if (inputList.composeString.getOrNull(0)?.isLetter() == true
+                if (dbg(inputList, "inputList: ").composeString.getOrNull(0)?.isLetter() == true
                     && prevChar()?.shouldHaveSpaceAfter() == true)
                     currentInputConnection.commitText(" ", 1)
                 currentInputConnection.commitText(inputList.displayString(), 1)
@@ -59,24 +78,28 @@ class WakalitoKeyboard : InputMethodService() {
         }
 
         view.findViewById<ImageButton>(R.id.backspace).setOnClickListener {
+            dbg("backspace")
             if (inputList.isEmpty()) {
-//                println("call prev")
+                dbg("input list empty")
                 // studio doesn't like getSelectedText but I really don't care rn
                 // NON-iOS BEHAVIOR: if the user is currently selecting text,
                 // ignore the deleting rules and just delete what we're told to!
                 if (currentInputConnection.getSelectedText(0).isNullOrEmpty()) {
-//                    println("no selection")
+                    dbg("no selection")
                     val prevChar = prevChar()
                     // let's do this the lazy way for now - directly porting from iOS
                     // premature optimization is bad
                     if (prevChar?.isLetter() == true) { // sanity check - we MUST delete at least one character
-//                        println("prev is letter")
+                        dbg("prev is letter")
                         // Credit to Toki Pona Keyboard for the "beforeCursorText" variable :)
+                        // TODO this sucks
                         val textLen = currentInputConnection
                             .getExtractedText(ExtractedTextRequest(), 0)
                             ?.text?.length ?: return@setOnClickListener deleteFallback()
 
-                        val textBeforeCursor = textBeforeCursor(textLen) // should we just use .text directly?
+                        dbg(textLen, "textLen: ")
+
+                        val textBeforeCursor = dbg(textBeforeCursor(textLen), "textBeforeCursor: ") // should we just use .text directly?
 
                         if (textBeforeCursor.isNullOrEmpty()) // we clearly have a character here...
                             return@setOnClickListener deleteFallback()
@@ -88,10 +111,10 @@ class WakalitoKeyboard : InputMethodService() {
                                 if (char.isLetter()) i -= char.length
                                 else break
                             }
-                            if (i >= 0 && textBeforeCursor[i] == ' ') i else i + 1
+                            dbg(if (i >= 0 && textBeforeCursor[i] == ' ') i else i + 1, "final index: ")
                         }
 
-                        currentInputConnection.deleteSurroundingText(textBeforeCursor.length - lastSpaceIndex, 0)
+                        delete(textBeforeCursor.length - lastSpaceIndex)
                     } else if (prevChar != null) delete(prevChar.length)
                 } else {
                     currentInputConnection.commitText("", 1)
@@ -143,6 +166,7 @@ class WakalitoKeyboard : InputMethodService() {
     }
 
     private fun delete(length: Int = 1) {
+        dbg("deleting $length characters")
         currentInputConnection.deleteSurroundingText(length, 0)
     }
 
@@ -152,38 +176,40 @@ class WakalitoKeyboard : InputMethodService() {
         // FIXME this delete fallback is known to get the keyboard stuck in an infinite loop.
 //        while (prevChar()?.isLetter() == true) delete()
 //        if (prevChar() == ' ') delete()
+        dbg("deleteFallback!!")
         throw IllegalStateException("prevChar was a letter but there is no text before the cursor!")
     }
 
     // Use the way Studio recommends if it's supported, otherwise do not.
     // Ironically, Studio's recommendation does not work on my Android R Waydroid device.
     private fun prevChar(): SurrogateCharacter? = textBeforeCursor(2)?.let {
+        dbg("prevChar")
         if (it.isEmpty()) null else codePointAtBack(it, it.lastIndex)
     }
 
     private fun codePointAtBack(nonEmptyString: CharSequence, i: Int): SurrogateCharacter = nonEmptyString.let {
-        when (it.length) {
+        dbg("call codePointAtBack with index $i")
+        dbg(
+        when (dbg(it.length, "length: ")) {
             0 -> throw IllegalArgumentException("no.")
             1 -> SurrogateCharacter(Character.codePointAt(it, i), 1)
             else -> {
                 val offset = if (it.hasSurrogatePairAt(i - 1)) 1 else 0
                 SurrogateCharacter(Character.codePointAt(it, i - offset), offset + 1)
             }
-        }
+        }, "codePointAtBack return: ")
     }
 
     private fun textBeforeCursor(length: Int): CharSequence? {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-//            println("new system")
-            val text = dbg(currentInputEditorInfo.getInitialTextBeforeCursor(length, 0), "text: ")
-            if (text?.isNotEmpty() == true) return dbg(text)
+            val text = dbg(currentInputEditorInfo.getInitialTextBeforeCursor(length, 0), "getInitialTextBeforeCursor: ")
+            if (text?.isNotEmpty() == true) return text
         }
-//        println("old system")
-        return dbg(currentInputConnection.getTextBeforeCursor(length, 0), "old text: ")
+        return dbg(currentInputConnection.getTextBeforeCursor(length, 0), "getTextBeforeCursor: ")
     }
 
-    private inline fun <reified T> dbg(obj: T, string: String = ""): T {
-//        println(string + obj)
+    private inline fun <reified T> dbg(obj: T, caption: String = ""): T {
+        if (DEBUG) file!!.appendText("$caption$obj\n")
         return obj
     }
 

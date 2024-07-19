@@ -4,7 +4,6 @@ package io.github.mathmaster13.wakalito
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Html
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
@@ -22,6 +21,8 @@ import androidx.core.text.method.LinkMovementMethodCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+
+const val DEBUG: Boolean = true
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +75,8 @@ class MainActivity : AppCompatActivity() {
         editText.hint = hint
 
         // remove the underline from the link, because it looks ugly
-        val topText = SpannableString(Html.fromHtml(resources.getString(R.string.app_top_text), 0))
+        // we must use the deprecated fromHtml because we are on min API 21.
+        val topText = SpannableString(HtmlCompat.fromHtml(resources.getString(R.string.app_top_text), HtmlCompat.FROM_HTML_MODE_LEGACY))
         // https://stackoverflow.com/a/72840682
         for (u in topText.getSpans(0, topText.length, URLSpan::class.java)) {
             topText.setSpan(object : URLSpan(u.url) {
