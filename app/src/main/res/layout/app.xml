@@ -32,25 +32,25 @@
 <!--    the hardcoded Latin string will be immediately replaced with sitelen pona if my code works. -->
 
 <!--    this is ONLY for debug mode.   -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/debug_copy"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/app_text_height"
-            android:layout_weight="1"
-            android:text="copy debug file" />
-        <Button
-            android:id="@+id/debug_clear"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/app_text_height"
-            android:layout_weight="1"
-            android:text="clear debug file" />
-    </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal">-->
+<!--        <Button-->
+<!--            android:id="@+id/debug_copy"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="@dimen/app_text_height"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="copy debug file" />-->
+<!--        <Button-->
+<!--            android:id="@+id/debug_clear"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="@dimen/app_text_height"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="clear debug file" />-->
+<!--    </LinearLayout>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/glyph_list"

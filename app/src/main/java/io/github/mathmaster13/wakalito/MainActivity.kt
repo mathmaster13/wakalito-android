@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.io.File
 
-const val DEBUG: Boolean = true
+const val DEBUG: Boolean = false
 const val DEBUG_PATH = "debug.txt"
 
 class MainActivity : AppCompatActivity() {
@@ -98,16 +98,16 @@ class MainActivity : AppCompatActivity() {
         // TODO if using a hard "enter" press, the list seems to get gray until we hit the text view again?
 
 
-        // debug setup. should be optimized away for DEBUG = false.
-        if (DEBUG) {
-            findViewById<Button>(R.id.debug_copy).setOnClickListener {
-                (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
-                    .setPrimaryClip(ClipData.newPlainText("wakalito debug file", File(filesDir, DEBUG_PATH).readText()))
-            }
-            findViewById<Button>(R.id.debug_clear).setOnClickListener {
-                File(filesDir, DEBUG_PATH).writeBytes(byteArrayOf())
-            }
-        }
+        // debug setup. should be commented out for DEBUG = false.
+//        if (DEBUG) {
+//            findViewById<Button>(R.id.debug_copy).setOnClickListener {
+//                (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
+//                    .setPrimaryClip(ClipData.newPlainText("wakalito debug file", File(filesDir, DEBUG_PATH).readText()))
+//            }
+//            findViewById<Button>(R.id.debug_clear).setOnClickListener {
+//                File(filesDir, DEBUG_PATH).writeBytes(byteArrayOf())
+//            }
+//        }
     }
 }
 
