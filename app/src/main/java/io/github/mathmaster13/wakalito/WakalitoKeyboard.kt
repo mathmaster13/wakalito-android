@@ -3,7 +3,6 @@ package io.github.mathmaster13.wakalito
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
-import android.os.Build
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -201,10 +200,11 @@ class WakalitoKeyboard : InputMethodService() {
     }
 
     private fun textBeforeCursor(length: Int): CharSequence? {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val text = dbg(currentInputEditorInfo.getInitialTextBeforeCursor(length, 0), "getInitialTextBeforeCursor: ")
-            if (text?.isNotEmpty() == true) return text
-        }
+        // causing some bizarre bugs for my tester
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//            val text = dbg(currentInputEditorInfo.getInitialTextBeforeCursor(length, 0), "getInitialTextBeforeCursor: ")
+//            if (text?.isNotEmpty() == true) return text
+//        }
         return dbg(currentInputConnection.getTextBeforeCursor(length, 0), "getTextBeforeCursor: ")
     }
 
