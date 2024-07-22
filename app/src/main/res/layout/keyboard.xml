@@ -160,10 +160,17 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/keyboard_row_height">
 
+<!--        TODO get a "nimi" SVG for this  -->
+<!--        TODO possibly change this button's color to show active or inactive? -->
+        <ImageButton
+            style="@style/WakalitoKey"
+            android:id="@+id/name_mode"
+            android:contentDescription="@string/name_mode"
+            android:backgroundTint="@color/button_color" />
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/space"
-            android:layout_weight="5"
+            android:layout_weight="4"
             android:contentDescription="@string/space"
             tools:ignore="ImageContrastCheck"
             android:backgroundTint="@color/button_color" />

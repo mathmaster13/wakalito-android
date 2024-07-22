@@ -2,6 +2,7 @@
     <string name="app_name">nasin sitelen Wakalito</string>
     <string name="space">space</string>
     <string name="ret">return</string>
+    <string name="name_mode">switch to/from name mode</string>
     <string name="backspace">backspace</string>
     <string name="comma">comma</string>
     <string name="emitters">emitters</string>

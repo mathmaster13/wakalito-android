@@ -354,6 +354,7 @@ val sequences: Map<ArrayList<Key>, String> = buildMap {
     put(arrayListOf(PONA, VERT, PONA), "yupekosi") // nimi yupekosi li nimi ku suli
     put(arrayListOf(PONA, LA), "yupekosi")
     put(arrayListOf(HOR, DOWN, UP), "powe") // a MUCH more accurate powe, hor + ala
+    put(arrayListOf(UP, HOR, CIRCLE, BOX), "jelo") // for symmetry with other colors
     // TODO if you have any better recommendations for () and [], let me know! These are experimental.
     put(arrayListOf(OP_BR), "(")
     put(arrayListOf(CL_BR), ")")
