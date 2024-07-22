@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">nasin sitelen Wakalito</string>
+    <string name="app_name_short">nasin Wakalito</string>
     <string name="space">space</string>
     <string name="ret">return</string>
     <string name="name_mode">switch to/from name mode</string>

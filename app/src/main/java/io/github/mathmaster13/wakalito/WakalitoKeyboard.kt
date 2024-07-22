@@ -19,6 +19,8 @@ class WakalitoKeyboard : InputMethodService() {
     private var actionId: Int = EditorInfo.IME_ACTION_UNSPECIFIED // default is press enter
     private lateinit var enterKey: ImageButton // effectively val
 
+    private var configChange = false
+
     private val file by lazy { if (DEBUG) {
         println("opening file")
         File(filesDir, DEBUG_PATH).apply {
@@ -43,6 +45,7 @@ class WakalitoKeyboard : InputMethodService() {
         val view = layoutInflater.inflate(R.layout.keyboard, null)
         val textView = view.findViewById<TextView>(R.id.textView)
         inputList.textView = textView
+        inputList.update()
 
         // Standard keys
         for (key in Key.entries) {
@@ -55,7 +58,8 @@ class WakalitoKeyboard : InputMethodService() {
         view.findViewById<ImageButton>(R.id.space).setOnClickListener {
             dbg("space pressed")
             if (inputList.hasNoInput()) {
-                currentInputConnection.commitText(" ", 1)
+                if (inputList is StandardInputList)
+                    currentInputConnection.commitText(" ", 1)
             } else {
                 inputList.writeWord()
             }
@@ -128,17 +132,24 @@ class WakalitoKeyboard : InputMethodService() {
             EditorInfo.IME_ACTION_GO -> R.drawable.go
             else -> R.drawable.ret // sadly custom action labels on the main keyboard aren't supported.
         })
+
+        inputList.update()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
+        configChange = true
         super.onConfigurationChanged(newConfig)
         inputList.update()
     }
 
     override fun onFinishInput() {
-        val view = inputList.textView
-        inputList = StandardInputList() // no writing/updating anything!!
-        inputList.textView = view
+        if (!configChange) {
+            val view = inputList.textView
+            inputList = StandardInputList() // no writing/updating anything!!
+            inputList.textView = view
+        } else {
+            configChange = false
+        }
     }
 
     private fun delete(length: Int = 1) {
@@ -197,8 +208,8 @@ class WakalitoKeyboard : InputMethodService() {
                 composeString = "" // should never be accessed, but just in case
                 textView.text = ""
             } else {
-                // We WANT sequences.getOrDefault(input.toTypedArray(), "?"), but can't have it on API 21.
-                composeString = sequences[list /*.toArray()*/] ?: "?"
+                // We WANT sequences.getOrDefault(input.toTypedArray(), INVALID), but can't have it on API 21.
+                composeString = sequences[list /*.toArray()*/] ?: INVALID
                 textView.text = "${builder}\u2009=\u2009${composeString}" // fairfax's spaces are too wide
             }
         }
@@ -208,7 +219,7 @@ class WakalitoKeyboard : InputMethodService() {
         override fun writeWord() {
             // text should never be empty here since we checked for empty input
             val text = dbg(this, "inputList: ").composeString
-            if (text == "?") return // unknown inputs should not be allowed!
+            if (text == INVALID) return // unknown inputs should not be allowed!
             if (text[0].isLetter() && prevChar()?.shouldHaveSpaceAfter() == true)
                 currentInputConnection.commitText(" ", 1)
             currentInputConnection.commitText(displayString(), 1)
@@ -260,7 +271,7 @@ class WakalitoKeyboard : InputMethodService() {
                 composeString = "" // should never be accessed, but just in case
                 textView.text = cartoucheBuilder.toString()
             } else {
-                composeString = sequences[list]?.takeIf { it[0].isLetter() } ?: "?" // never empty!
+                composeString = sequences[list]?.takeIf { it[0].isLetter() } ?: INVALID // never empty!
                 textView.text = "${builder}\u2009=\u2009${composeString}" // fairfax's spaces are too wide
             }
         }
@@ -270,8 +281,8 @@ class WakalitoKeyboard : InputMethodService() {
         override fun writeWord() {
             // text should never be empty here since we checked for empty input
             val text = dbg(this, "inputList: ").composeString
-            if (text == "?") return // unknown inputs should not be allowed!
-            cartoucheBuilder.insert(cartoucheBuilder.length - 2, " $text") // offset 2 because <end cartouche> is 2 characters
+            if (text == INVALID) return // unknown inputs should not be allowed!
+            cartoucheBuilder.insert(cartoucheBuilder.length - 2, "$text$CARTOUCHE_COMBINER") // offset 2 because <end cartouche> is 2 characters
             // first letter of name is uppercase, rest are lowercase
             nameBuilder.apply {
                 if (isEmpty()) append(text[0].uppercaseChar())
@@ -283,10 +294,20 @@ class WakalitoKeyboard : InputMethodService() {
         override fun deleteLastWord() {
             require(list.isEmpty())
             if (nameBuilder.isEmpty()) return
+            if (nameBuilder.length == 1) {
+                nameBuilder.clear()
+                cartoucheBuilder.setRange(0, cartoucheBuilder.length, CARTOUCHE_STRING)
+                update()
+                return
+            }
+
+            // now we can search for the second-to-last cartouche combiner
             nameBuilder.deleteAt(nameBuilder.lastIndex)
+
+            val lastCombiner = cartoucheBuilder.lastIndexOf(CARTOUCHE_COMBINER)
+            // get the second-to-last cartouche character
             // cartouche end character is 2 long
-            println(cartoucheBuilder)
-            cartoucheBuilder.delete(cartoucheBuilder.lastIndexOf(' '), cartoucheBuilder.length - 2)
+            cartoucheBuilder.delete(cartoucheBuilder.lastIndexOf(CARTOUCHE_COMBINER, lastCombiner - 1) + 2, cartoucheBuilder.length - 2)
             update()
         }
 
@@ -309,3 +330,5 @@ private data class SurrogateCharacter(val codePoint: Int, val length: Int) {
 }
 
 private const val CARTOUCHE_STRING = "\uDB86\uDD90\uDB86\uDD91"
+private const val CARTOUCHE_COMBINER = "\uDB86\uDD92"
+private const val INVALID = "\uDBBE\uDFFF" // ijo ni li seme?
