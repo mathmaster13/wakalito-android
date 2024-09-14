@@ -32,36 +32,31 @@
             style="@style/WakalitoKey"
             android:id="@+id/hor"
             android:contentDescription="@string/hor"
-            android:src="@drawable/hor"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/hor" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/dot"
             android:contentDescription="@string/dot"
-            android:src="@drawable/dot"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/dot" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/down"
             android:contentDescription="@string/down"
-            android:src="@drawable/down"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/down" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/ike"
             android:contentDescription="@string/ike"
-            android:src="@drawable/ike"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/ike" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/bracket_open"
             android:contentDescription="@string/bracket_open"
-            android:src="@drawable/bracket_open"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/bracket_open" />
     </LinearLayout>
 
     <LinearLayout
@@ -71,43 +66,37 @@
             style="@style/WakalitoKey"
             android:id="@+id/luka"
             android:contentDescription="@string/luka"
-            android:src="@drawable/luka"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/luka" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/vert"
             android:contentDescription="@string/vert"
-            android:src="@drawable/vert"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/vert" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/circle"
             android:contentDescription="@string/circle"
-            android:src="@drawable/circle"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/circle" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/up"
             android:contentDescription="@string/up"
-            android:src="@drawable/up"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/up" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/pona"
             android:contentDescription="@string/pona"
-            android:src="@drawable/pona"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/pona" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/bracket_pini"
             android:contentDescription="@string/bracket_pini"
-            android:src="@drawable/bracket_pini"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/bracket_pini" />
     </LinearLayout>
 
     <LinearLayout
@@ -117,61 +106,61 @@
             style="@style/WakalitoKey"
             android:id="@+id/colon"
             android:contentDescription="@string/colon"
-            android:src="@drawable/colon"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/colon" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/poki"
             android:contentDescription="@string/poki"
-            android:src="@drawable/poki"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/poki" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/box"
             android:contentDescription="@string/box"
-            android:src="@drawable/box"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/box" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/emitters"
             android:contentDescription="@string/emitters"
-            android:src="@drawable/emitters"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/emitters" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/comma"
             android:contentDescription="@string/comma"
-            android:src="@drawable/comma"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/comma" />
 
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/backspace"
             android:contentDescription="@string/backspace"
-            android:src="@drawable/backspace"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/backspace" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/keyboard_row_height">
 
+<!--        TODO get a "nimi" SVG for this  -->
+<!--        TODO possibly change this button's color to show active or inactive? -->
+        <ImageButton
+            style="@style/WakalitoKey"
+            android:id="@+id/name_mode"
+            android:contentDescription="@string/name_mode"
+            android:src="@drawable/nimi"
+            android:scaleType="fitCenter"/>
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/space"
-            android:layout_weight="5"
+            android:layout_weight="4"
             android:contentDescription="@string/space"
-            tools:ignore="ImageContrastCheck"
-            android:backgroundTint="@color/button_color" />
+            tools:ignore="ImageContrastCheck" />
         <ImageButton
             style="@style/WakalitoKey"
             android:id="@+id/ret"
             android:contentDescription="@string/ret"
-            android:src="@drawable/ret"
-            android:backgroundTint="@color/button_color" />
+            android:src="@drawable/ret" />
     </LinearLayout>
 </LinearLayout>

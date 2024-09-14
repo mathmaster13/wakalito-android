@@ -15,9 +15,11 @@ import java.io.File
 // TODO is it safe to store currentInputConnection/editorinfo? is it any better to do so?
 
 class WakalitoKeyboard : InputMethodService() {
-    private val inputList = InputList()
+    private var inputList: InputList = StandardInputList()
     private var actionId: Int = EditorInfo.IME_ACTION_UNSPECIFIED // default is press enter
     private lateinit var enterKey: ImageButton // effectively val
+
+    private var configChange = false
 
     private val file by lazy { if (DEBUG) {
         println("opening file")
@@ -43,6 +45,7 @@ class WakalitoKeyboard : InputMethodService() {
         val view = layoutInflater.inflate(R.layout.keyboard, null)
         val textView = view.findViewById<TextView>(R.id.textView)
         inputList.textView = textView
+        inputList.update()
 
         // Standard keys
         for (key in Key.entries) {
@@ -54,14 +57,11 @@ class WakalitoKeyboard : InputMethodService() {
         // Special keys
         view.findViewById<ImageButton>(R.id.space).setOnClickListener {
             dbg("space pressed")
-            if (inputList.isEmpty()) {
-                currentInputConnection.commitText(" ", 1)
-            } else {
-                if (dbg(inputList, "inputList: ").composeString.getOrNull(0)?.isLetter() == true
-                    && prevChar()?.shouldHaveSpaceAfter() == true)
+            if (inputList.hasNoInput()) {
+                if (inputList is StandardInputList)
                     currentInputConnection.commitText(" ", 1)
-                currentInputConnection.commitText(inputList.displayString(), 1)
-                inputList.clear()
+            } else {
+                inputList.writeWord()
             }
         }
 
@@ -74,53 +74,32 @@ class WakalitoKeyboard : InputMethodService() {
                 EditorInfo.IME_ACTION_NONE -> currentInputConnection.commitText("\n", 1)
                 else -> currentInputConnection.performEditorAction(actionId) // bad custom IDs are your skill issue
             }
+            // TODO do we want a better behvaior? inserting \n when inputList has content seems weird
         }
 
         view.findViewById<ImageButton>(R.id.backspace).setOnClickListener {
             dbg("backspace")
-            if (inputList.isEmpty()) {
+            if (inputList.list.isEmpty()) {
                 dbg("input list empty")
                 // studio doesn't like getSelectedText but I really don't care rn
-                // NON-iOS BEHAVIOR: if the user is currently selecting text,
-                // ignore the deleting rules and just delete what we're told to!
                 if (currentInputConnection.getSelectedText(0).isNullOrEmpty()) {
                     dbg("no selection")
-                    val prevChar = prevChar()
-                    // let's do this the lazy way for now - directly porting from iOS
-                    // premature optimization is bad
-                    if (prevChar?.isLetter() == true) { // sanity check - we MUST delete at least one character
-                        dbg("prev is letter")
-                        // Credit to Toki Pona Keyboard for the "beforeCursorText" variable :)
-                        // TODO this sucks
-                        val textLen = currentInputConnection
-                            .getExtractedText(ExtractedTextRequest(), 0)
-                            ?.text?.length ?: return@setOnClickListener deleteFallback()
-
-                        dbg(textLen, "textLen: ")
-
-                        val textBeforeCursor = dbg(textBeforeCursor(textLen), "textBeforeCursor: ") // should we just use .text directly?
-
-                        if (textBeforeCursor.isNullOrEmpty()) // we clearly have a character here...
-                            return@setOnClickListener deleteFallback()
-
-                        val lastSpaceIndex = run {
-                            var i = textBeforeCursor.lastIndex - prevChar.length // last character is a letter for sure
-                            while (i >= 0) {
-                                val char = codePointAtBack(textBeforeCursor, i)
-                                if (char.isLetter()) i -= char.length
-                                else break
-                            }
-                            dbg(if (i >= 0 && textBeforeCursor[i] == ' ') i else i + 1, "final index: ")
-                        }
-
-                        delete(textBeforeCursor.length - lastSpaceIndex)
-                    } else if (prevChar != null) delete(prevChar.length)
+                    inputList.deleteLastWord()
                 } else {
                     currentInputConnection.commitText("", 1)
                 }
             } else {
                 inputList.pop()
             }
+        }
+
+        view.findViewById<ImageButton>(R.id.name_mode).setOnClickListener {
+            // no switching modes while typing!
+            if (inputList.list.isNotEmpty()) return@setOnClickListener
+            inputList = inputList.switchTo(when (inputList) {
+                is StandardInputList -> NameInputList()
+                is NameInputList -> StandardInputList()
+            })
         }
         return view
     }
@@ -153,15 +132,24 @@ class WakalitoKeyboard : InputMethodService() {
             EditorInfo.IME_ACTION_GO -> R.drawable.go
             else -> R.drawable.ret // sadly custom action labels on the main keyboard aren't supported.
         })
+
+        inputList.update()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
+        configChange = true
         super.onConfigurationChanged(newConfig)
-        inputList.restoreTextView()
+        inputList.update()
     }
 
     override fun onFinishInput() {
-        inputList.clear()
+        if (!configChange) {
+            val view = inputList.textView
+            inputList = StandardInputList() // no writing/updating anything!!
+            inputList.textView = view
+        } else {
+            configChange = false
+        }
     }
 
     private fun delete(length: Int = 1) {
@@ -213,74 +201,121 @@ class WakalitoKeyboard : InputMethodService() {
         return obj
     }
 
-    private class InputList {
-        lateinit var textView: TextView
-        val list: ArrayList<Key> = ArrayList(12) // 11-character sequences exist
-        var composeString = ""
-        val builder: StringBuilder = StringBuilder(24) // TODO redundant :(
-
-        override fun toString() = list.toString()
-
-        @SuppressLint("SetTextI18n") // silly android, this text is meant to be *not* translated.
-        fun update() {
-            if (isEmpty()) {
+    private inner class StandardInputList : InputList() {
+        @SuppressLint("SetTextI18n")
+        override fun update() { // silly android, this text is meant to be *not* translated.
+            if (list.isEmpty()) {
                 composeString = "" // should never be accessed, but just in case
                 textView.text = ""
             } else {
-                // We WANT sequences.getOrDefault(input.toTypedArray(), "?"), but can't have it on API 21.
-                composeString = sequences[list /*.toArray()*/] ?: "?"
+                // We WANT sequences.getOrDefault(input.toTypedArray(), INVALID), but can't have it on API 21.
+                composeString = sequences[list /*.toArray()*/] ?: INVALID
                 textView.text = "${builder}\u2009=\u2009${composeString}" // fairfax's spaces are too wide
             }
         }
 
-        // If we redraw the view, put the composing text back!
+        override fun hasNoInput() = list.isEmpty()
+
+        override fun writeWord() {
+            // text should never be empty here since we checked for empty input
+            val text = dbg(this, "inputList: ").composeString
+            if (text == INVALID) return // unknown inputs should not be allowed!
+            if (text[0].isLetter() && prevChar()?.shouldHaveSpaceAfter() == true)
+                currentInputConnection.commitText(" ", 1)
+            currentInputConnection.commitText(displayString(), 1)
+            clear()
+        }
+
+        override fun deleteLastWord() {
+            require(list.isEmpty())
+            val prevChar = prevChar()
+            // let's do this the lazy way for now - directly porting from iOS
+            // premature optimization is bad
+            if (prevChar?.isLetter() == true) { // sanity check - we MUST delete at least one character
+                dbg("prev is letter")
+                // Credit to Toki Pona Keyboard for the "beforeCursorText" variable :)
+                // TODO this sucks
+                val textLen = currentInputConnection
+                    .getExtractedText(ExtractedTextRequest(), 0)
+                    ?.text?.length ?: return deleteFallback()
+
+                dbg(textLen, "textLen: ")
+
+                val textBeforeCursor = dbg(textBeforeCursor(textLen), "textBeforeCursor: ") // should we just use .text directly?
+
+                if (textBeforeCursor.isNullOrEmpty()) // we clearly have a character here...
+                    return deleteFallback()
+
+                val lastSpaceIndex = run {
+                    var i = textBeforeCursor.lastIndex - prevChar.length // last character is a letter for sure
+                    while (i >= 0) {
+                        val char = codePointAtBack(textBeforeCursor, i)
+                        if (char.isLetter()) i -= char.length
+                        else break
+                    }
+                    dbg(if (i >= 0 && textBeforeCursor[i] == ' ') i else i + 1, "final index: ")
+                }
+
+                delete(textBeforeCursor.length - lastSpaceIndex)
+            } else if (prevChar != null) delete(prevChar.length)
+        }
+    }
+
+    private inner class NameInputList : InputList() {
+        private val cartoucheBuilder = StringBuilder(CARTOUCHE_STRING)
+        private val nameBuilder = StringBuilder()
+
         @SuppressLint("SetTextI18n")
-        fun restoreTextView() {
-            if (isEmpty()) {
-                textView.text = ""
+        override fun update() { // silly android, this text is meant to be *not* translated.
+            if (list.isEmpty()) {
+                composeString = "" // should never be accessed, but just in case
+                textView.text = cartoucheBuilder.toString()
             } else {
-                textView.text = "${builder}=${composeString}"
+                composeString = sequences[list]?.takeIf { it[0].isLetter() } ?: INVALID // never empty!
+                textView.text = "${builder}\u2009=\u2009${composeString}" // fairfax's spaces are too wide
             }
         }
 
-        fun push(key: Key) {
-            list.add(key)
-            builder.append('\uDB87')
-            builder.append(key.surr)
+        override fun hasNoInput() = list.isEmpty()
+
+        override fun writeWord() {
+            // text should never be empty here since we checked for empty input
+            val text = dbg(this, "inputList: ").composeString
+            if (text == INVALID) return // unknown inputs should not be allowed!
+            cartoucheBuilder.insert(cartoucheBuilder.length - 2, "$text$CARTOUCHE_COMBINER") // offset 2 because <end cartouche> is 2 characters
+            // first letter of name is uppercase, rest are lowercase
+            nameBuilder.apply {
+                if (isEmpty()) append(text[0].uppercaseChar())
+                else append(text[0].lowercaseChar())
+            }
+            clear()
+        }
+
+        override fun deleteLastWord() {
+            require(list.isEmpty())
+            if (nameBuilder.isEmpty()) return
+            if (nameBuilder.length == 1) {
+                nameBuilder.clear()
+                cartoucheBuilder.setRange(0, cartoucheBuilder.length, CARTOUCHE_STRING)
+                update()
+                return
+            }
+
+            // now we can search for the second-to-last cartouche combiner
+            nameBuilder.deleteAt(nameBuilder.lastIndex)
+
+            val lastCombiner = cartoucheBuilder.lastIndexOf(CARTOUCHE_COMBINER)
+            // get the second-to-last cartouche character
+            // cartouche end character is 2 long
+            cartoucheBuilder.delete(cartoucheBuilder.lastIndexOf(CARTOUCHE_COMBINER, lastCombiner - 1) + 2, cartoucheBuilder.length - 2)
             update()
         }
-        // returns true if something was popped
-        fun pop(): Boolean {
-            val canPop = list.isNotEmpty()
-            if (canPop) {
-                list.removeAt(list.size - 1)
-                builder.setLength(builder.length - 2)
-                update()
-            }
-            return canPop
-        }
 
-        // set update to false to avoid updating the UI
-        fun clear(update: Boolean = true) {
-            if (list.isNotEmpty()) {
-                list.clear()
-                builder.clear()
-                if (update) update()
-            }
-        }
-
-        fun isEmpty() = list.isEmpty()
-
-        fun displayString(): String = when(composeString) {
-            "epiku1" -> "epiku"
-            "soko1" -> "soko"
-            "mute2" -> "mute"
-            "sewi2" -> "sewi"
-            "toki-pona" -> "toki pona"
-            "aaa" -> "a a a"
-            "misonaala" -> "mi sona ala"
-            "alelipona" -> "ale li pona"
-            else -> composeString
+        override fun switchTo(newList: InputList): InputList = super.switchTo(newList).also {
+            if (nameBuilder.isEmpty()) return@also
+            if (prevChar()?.shouldHaveSpaceAfter() == true)
+                currentInputConnection.commitText(" ", 1)
+            currentInputConnection.commitText(nameBuilder.toString(), 1)
         }
     }
 }
@@ -288,8 +323,12 @@ class WakalitoKeyboard : InputMethodService() {
 private data class SurrogateCharacter(val codePoint: Int, val length: Int) {
     fun isLetter() = Character.isLetter(codePoint)
     fun shouldHaveSpaceAfter() = isLetter() || when (codePoint) {
+        // TODO experimental: include ) and ]? maybe even include numbers?
         ','.code, '.'.code, ':'.code, '?'.code, '!'.code -> true
         else -> false
     }
 }
-// TODO for the search function, use the inverse of displayString?
+
+private const val CARTOUCHE_STRING = "\uDB86\uDD90\uDB86\uDD91"
+private const val CARTOUCHE_COMBINER = "\uDB86\uDD92"
+private const val INVALID = "\uDBBE\uDFFF" // ijo ni li seme?
